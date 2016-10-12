@@ -1,0 +1,31 @@
+
+<RadSideDrawer #drawer [transition]="sideDrawerTransition" selectionBehavior="None">
+	<StackLayout tkDrawerContent>
+
+		<GridLayout rows="*, auto">
+			<StackLayout style="background-color: #053140;">
+				<Image src="res://logo" class="slide-out-img" stretch="none"></Image>
+				<Button tap="selectView" class="slide-out-btn" text="My agenda"></Button>
+				<Button tap="selectView" class="slide-out-btn" text="All sessions"></Button>
+				<Button tap="selectView" class="slide-out-btn" text="Sponsors"></Button>
+
+				<Button tap="goToAcknowledgementPage" class="slide-out-btn" text="Ackknowledgements"></Button>
+
+                <Button [nsRouterLink]="['/home']" class="slide-out-btn" nsRouterLinkActive="slide-out-btn-selected" text="My agenda" [nsRouterLinkActiveOptions]="{exact:true}"></Button>
+                <Button [nsRouterLink]="['/home/otherPath']" class="slide-out-btn" nsRouterLinkActive="slide-out-btn-selected" text="Sponsors"></Button>
+
+				<!-- anything you want in drawer -->
+				<!-- for example: -->
+				<!-- you want options {exact: true} on the first one because otherwise it would be considered active when 'Other Page' in active as well -->
+				<Button text="Home" [nsRouterLink]="['/home']" nsRouterLinkActive="active" [nsRouterLinkActiveOptions]="{exact:true}"></Button>
+
+				<Button text="Other Page" [nsRouterLink]="['/home/otherPath']" nsRouterLinkActive="active"></Button>
+			</StackLayout>
+		</GridLayout>
+
+
+	</StackLayout>
+	<StackLayout tkMainContent>
+		<router-outlet></router-outlet>
+	</StackLayout>
+</RadSideDrawer>
