@@ -18,13 +18,13 @@ export const routes: Routes = [
     component: HomeComponent,
     children: [
       // '/home' loaded into `router-outlet` in main content
-      { path: "", component: StartComponent }, 
+      { path: "", component: StartComponent },
       // '/home/otherPath' loaded into `router-outlet` in main content
-      { path: "otherPath", component: SomeOtherComponent },  
+      { path: "otherPath", component: SomeOtherComponent },
 
       // etc.
     ]
   },
   // '/someNavPage' pushed on nav stack using `page-router-outlet` (ie, push on a detail view with no drawer
-  { path: "details", component: DetailsComponent },
+  { path: "details/:id", component: DetailsComponent },
 ];

@@ -34,7 +34,7 @@ export class StartComponent implements OnInit {
 
   //public sessions: Observable<Array<SessionModel>>;
   public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
-  private _allSessions: Array<SessionModel> = [];
+  //private _allSessions: Array<SessionModel> = [];
 
 
   public get confDayOptions(): Array<IConferenceDay> {
@@ -42,11 +42,11 @@ export class StartComponent implements OnInit {
   }
 
   get selectedIndex(): number {
-    console.log('getting selectedIndex');
+    //console.log('getting selectedIndex');
     return this._selectedIndex;
   }
   set selectedIndex(value: number) {
-    console.log('setting selectedIndex=' + value);
+    //console.log('setting selectedIndex=' + value);
     if (this._selectedIndex !== value) {
       this._selectedIndex = value;
       //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "selectedIndex", value: value });
@@ -77,9 +77,12 @@ export class StartComponent implements OnInit {
       .map(s => s.map(s1 => new SessionModel(s1)));
       */
 
+
+    console.log('list on init. sessionsloaded= ' + this._sessionsService.sessionsLoaded);
     var p = this._sessionsService.loadSessions<Array<ISession>>()
       .then((newSessions: Array<ISession>) => {
-        this._allSessions = newSessions.map(s => new SessionModel(s));
+        //this._allSessions = newSessions.map(s => new SessionModel(s));
+
         this.publishUpdates();
       });
   }
@@ -88,8 +91,8 @@ export class StartComponent implements OnInit {
     // Make sure all updates are published inside NgZone so that change detection is triggered if needed
     this.zone.run(() => {
       // must emit a *new* value (immutability!)
-      console.log('in the zone, updating sessions');
-      this.sessions.next([...this._allSessions]);
+      //console.log('in the zone, updating sessions');
+      this.sessions.next([...this._sessionsService.allSessions]);
 
 
     });
@@ -99,8 +102,9 @@ export class StartComponent implements OnInit {
     var session = <SessionModel>args.view.bindingContext;
     //hideSearchKeyboard();
     if (!session.isBreak) {
-      console.log('select session ' + session.title);
-      this.routerExtensions.navigateByUrl('details');
+      //console.log('select session ' + session.title);
+      let link = ['/details', session.id];
+      this.routerExtensions.navigate(link);
       //navigationModule.gotoSessionPage(session);
     }
 
@@ -115,4 +119,4 @@ export class StartComponent implements OnInit {
   }
 
 }
-var a = 3;
+var a = 5;
