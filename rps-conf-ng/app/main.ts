@@ -14,6 +14,7 @@ import {HomeComponent} from './home.component';
 import {StartComponent} from './start.component';
 import {SomeOtherComponent} from './some-other.component';
 import { DetailsComponent } from './details.component';
+import { MapComponent } from './map.component';
 import { SessionsService } from './services/sessions.service';
 import { DrawerService } from './drawer.service';
 // import other components, etc.
@@ -32,8 +33,8 @@ import {routes} from './app.routes';
     HomeComponent,
     StartComponent,
     SomeOtherComponent,
-    DetailsComponent
-    // other components used in routes, etc.
+    DetailsComponent,
+    MapComponent
   ],
   bootstrap: [AppComponent],
   providers: [SessionsService, DrawerService,RouterExtensions]
