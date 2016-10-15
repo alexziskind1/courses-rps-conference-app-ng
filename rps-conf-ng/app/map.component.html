@@ -1,21 +1,23 @@
 <StackLayout>
-      <GridLayout rows="auto, *">
-    <!-- HEADER -->
-    <StackLayout class="page-header">
-      <GridLayout class="action-bar">
-        <StackLayout (tap)="backTap()" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
-          <Image stretch="none" class="icon-image" src="res://ic_arrow_back"></Image>
-          <Label text="Back" class="back-text"></Label>
-        </StackLayout>
-        
-        <Label [text]="room.name" class="action-bar-title"></Label>
-      </GridLayout>
-    </StackLayout>
- 
-    <!-- Content -->
-    <GridLayout row="1" class="content">
-      <Image id="imgMap" imageSource="{{ image }}" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center" swipe="backSwipe"></Image>
-      <ActivityIndicator [busy]="isLoading" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
-    </GridLayout>
-  </GridLayout>
+	<StackLayout *ngIf="room">
+		<GridLayout rows="auto, *">
+			<!-- HEADER -->
+			<StackLayout class="page-header">
+				<GridLayout class="action-bar">
+					<StackLayout (tap)="backTap()" orientation="horizontal" class="action-wrap" horizontalAlignment="left">
+						<Image stretch="none" class="icon-image" src="res://ic_arrow_back"></Image>
+						<Label text="Back" class="back-text"></Label>
+					</StackLayout>
+
+					<Label [text]="room.name" class="action-bar-title"></Label>
+				</GridLayout>
+			</StackLayout>
+
+			<!-- Content -->
+			<GridLayout row="1" class="content">
+				<Image id="imgMap" imageSource="{{ image }}" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center" swipe="backSwipe"></Image>
+				<ActivityIndicator [busy]="isLoading" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
+			</GridLayout>
+		</GridLayout>
+	</StackLayout>
 </StackLayout>
