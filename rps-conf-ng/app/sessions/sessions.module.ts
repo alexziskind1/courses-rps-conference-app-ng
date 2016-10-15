@@ -6,8 +6,8 @@ import { SIDEDRAWER_DIRECTIVES } from "nativescript-telerik-ui/sidedrawer/angula
 
 import { sessionsRouting } from "./sessions.routing";
 import { SessionsComponent } from "./sessions.component";
-import { DetailsComponent } from "../details.component";
-import { MapComponent } from "../map.component";
+import { SessionDetailsComponent } from "./session-details/session-details.component";
+import { SessionMapComponent } from "./session-map/session-map.component";
 //import { SessionsListComponent } from "./session-list/session-list.component";
 
 
@@ -19,8 +19,8 @@ import { MapComponent } from "../map.component";
   ],
   declarations: [
     SessionsComponent,
-    DetailsComponent,
-    MapComponent,
+    SessionDetailsComponent,
+    SessionMapComponent,
     SIDEDRAWER_DIRECTIVES
   ]
 })

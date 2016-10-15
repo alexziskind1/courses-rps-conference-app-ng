@@ -6,7 +6,6 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
 
-
 // nativescript
 import { RadSideDrawerComponent } from 'nativescript-telerik-ui/sidedrawer/angular';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-telerik-ui/sidedrawer';
@@ -14,13 +13,13 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
+import * as frameModule from 'ui/frame';
 
 import { ISession, IConferenceDay } from '../shared/interfaces';
 import { SessionsService } from '../services/sessions.service';
 import { DrawerService } from '../services/drawer.service';
 import { SessionModel } from './shared/session.model';
 import { conferenceDays } from '../shared/static-data';
-
 
 @Component({
   moduleId: module.id,
@@ -83,8 +82,8 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     private _drawerService: DrawerService,
     private _sessionsService: SessionsService, private zone: NgZone, private routerExtensions: RouterExtensions, private route: ActivatedRoute) {
 
-
     _page.on("loaded", this.onLoaded, this);
+    _page.backgroundSpanUnderStatusBar = true;
   }
 
   public get sideDrawerTransition(): DrawerTransitionBase {
@@ -173,7 +172,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     //hideSearchKeyboard();
     if (!session.isBreak) {
       //console.log('select session ' + session.title);
-      let link = ['/details', session.id];
+      let link = ['/session-details', session.id];
       this.routerExtensions.navigate(link);
       //navigationModule.gotoSessionPage(session);
     }

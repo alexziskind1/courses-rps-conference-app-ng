@@ -9,14 +9,18 @@ declare var UIApplication: any;
 declare var UIApplicationDelegate: any;
 
 export function setStatusBarColors() {
+  console.log('setStatusBarColors');
   // Make the iOS status bar transparent with white text.
   // See https://github.com/burkeholland/nativescript-statusbar/issues/2
   // for details on the technique used.
   if (application.ios) {
+    console.log('setStatusBarColors ios');
     const AppDelegate = UIResponder.extend({
       applicationDidFinishLaunchingWithOptions: function() {
         // Allow for XCode 8 API changes
-        utils.ios.getter(UIApplication, UIApplication.sharedApplication).statusBarStyle = UIStatusBarStyle.LightContent;
+        //utils.ios.getter(UIApplication, UIApplication.sharedApplication).statusBarStyle = UIStatusBarStyle.LightContent;
+        UIApplication.sharedApplication.statusBarStyle = 1; 
+        console.log('setStatusBarColors utils.ios style: ' + UIStatusBarStyle.LightContent);
         return true;
       }
     }, {

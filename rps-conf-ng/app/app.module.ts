@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 
 
+
 import { routes } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { setStatusBarColors } from "./shared";

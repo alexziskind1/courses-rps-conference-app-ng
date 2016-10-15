@@ -1,5 +1,3 @@
-
-
 // angular
 import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, Params } from '@angular/router';
@@ -13,23 +11,24 @@ import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gest
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
+import { ImageSource } from 'image-source';
 
-import { SessionsService } from './services/sessions.service';
-import { SessionModel } from './sessions/shared/session.model';
+import { IRoomInfo } from '../../shared/interfaces';
+import { SessionsService } from '../../services/sessions.service';
+import { SessionModel } from '../shared/session.model';
 
 
 @Component({
   moduleId: module.id,
-  selector: 'session-details',
-  templateUrl: 'details.component.html',
-  styleUrls: ['details.component.css']
+  selector: 'session-map',
+  templateUrl: 'session-map.component.html'
 })
-export class DetailsComponent implements OnInit {
+export class SessionMapComponent implements OnInit {
 
-  public session: SessionModel;
+  public room: IRoomInfo;
 
-  @ViewChild('btnDesc') btnDesc: ElementRef;
-  @ViewChild('lblDesc') lblDesc: ElementRef;
+public isLoading: boolean = false;
+public image: ImageSource;
 
 
   constructor(private _page: Page, private _sessionsService: SessionsService, private route: ActivatedRoute,
@@ -45,9 +44,8 @@ export class DetailsComponent implements OnInit {
 
       this._sessionsService.getSessionById(id)
         .then((session: SessionModel) => {
-          this.session = session;
+            this.room = session.roomInfo;
         });
-
     });
   }
 
@@ -59,31 +57,8 @@ export class DetailsComponent implements OnInit {
   }
 
   public backTap() {
-    this.routerExtensions.back();
+    this.routerExtensions.backToPreviousPage();
   }
 
-  public showMapTap() {
-      //console.log('select session ' + session.title);
-      let link = ['/map', this.session.id];
-      this.routerExtensions.navigate(link);
-  }
-
-  public toggleFavorite() {
-    this.session.toggleFavorite();
-  }
-
-  public toogleDescription() {
-    let btn = <Button>this.btnDesc.nativeElement;
-    let lbl = <Label>this.lblDesc.nativeElement;
-    if (btn.text === 'MORE') {
-      btn.text = 'LESS';
-      lbl.text = this.session.description;
-    }
-    else {
-      btn.text = 'MORE';
-      lbl.text = this.session.descriptionShort;
-      //scroll.scrollToVerticalOffset(0, false);
-    }
-  }
 
 }

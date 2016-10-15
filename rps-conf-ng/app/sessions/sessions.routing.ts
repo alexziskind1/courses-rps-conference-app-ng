@@ -2,8 +2,8 @@ import { ModuleWithProviders }  from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { SessionsComponent } from "./sessions.component";
-import { DetailsComponent } from "../details.component";
-import { MapComponent } from "../map.component";
+import { SessionDetailsComponent } from "./session-details/session-details.component";
+import { SessionMapComponent } from "./session-map/session-map.component";
 
 const sessionsRoutes: Routes = [
   {
@@ -11,12 +11,12 @@ const sessionsRoutes: Routes = [
     component: SessionsComponent
   },
   {
-    path: "details/:id",
-    component: DetailsComponent
+    path: "session-details/:id",
+    component: SessionDetailsComponent
   },
   {
-    path: "map/:id",
-    component: MapComponent
+    path: "session-map/:id",
+    component: SessionMapComponent
   }
 ];
 export const sessionsRouting: ModuleWithProviders = RouterModule.forChild(sessionsRoutes);
