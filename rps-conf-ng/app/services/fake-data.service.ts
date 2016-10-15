@@ -71,7 +71,7 @@ export function generateSessions(speakers: Array<ISpeaker>, roomInfos: Array<IRo
                 sessionList.push(s);
             }
             else {
-                var subSpeakers = getRandomArrayElements(speakers, faker.random.number(3));
+                var subSpeakers = getRandomArrayElements(speakers, faker.random.number({min: 1, max: 3}));
                 var roomInfo = roomInfos[faker.random.number(roomInfos.length-1)];
                 
                 let s: ISession = {
