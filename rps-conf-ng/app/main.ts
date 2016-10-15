@@ -1,4 +1,5 @@
 // this import should be first in order to load some required settings (like globals and reflect-metadata)
+/*
 import { NgModule  } from "@angular/core";
 import { Location }                 from '@angular/common';
 // nativescript
@@ -40,5 +41,10 @@ import {routes} from './app.routes';
   providers: [SessionsService, DrawerService,RouterExtensions]
 })
 export class AppModule { }
+
+platformNativeScriptDynamic().bootstrapModule(AppModule);
+*/
+import { platformNativeScriptDynamic, NativeScriptModule } from "nativescript-angular/platform";
+import { AppModule } from "./app.module";
 
 platformNativeScriptDynamic().bootstrapModule(AppModule);

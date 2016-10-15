@@ -15,20 +15,20 @@ import { Button } from 'ui/button';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
 
-import { ISession, IConferenceDay } from './shared/interfaces';
-import { SessionsService } from './services/sessions.service';
-import { DrawerService } from './drawer.service';
-import { SessionModel } from './sessions/shared/session.model';
-import { conferenceDays } from './shared/static-data';
+import { ISession, IConferenceDay } from '../shared/interfaces';
+import { SessionsService } from '../services/sessions.service';
+import { DrawerService } from '../services/drawer.service';
+import { SessionModel } from './shared/session.model';
+import { conferenceDays } from '../shared/static-data';
 
 
 @Component({
   moduleId: module.id,
-  selector: 'home',
-  templateUrl: 'home.component.html',
+  selector: 'sessions',
+  templateUrl: 'sessions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class SessionsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
   //private _sideDrawerTransition: DrawerTransitionBase;
