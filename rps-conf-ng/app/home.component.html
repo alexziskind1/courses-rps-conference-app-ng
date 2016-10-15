@@ -1,31 +1,85 @@
-
 <RadSideDrawer #drawer [transition]="sideDrawerTransition" selectionBehavior="None">
 	<StackLayout tkDrawerContent>
 
 		<GridLayout rows="*, auto">
 			<StackLayout style="background-color: #053140;">
 				<Image src="res://logo" class="slide-out-img" stretch="none"></Image>
-				<Button tap="selectView" class="slide-out-btn" text="My agenda"></Button>
-				<Button tap="selectView" class="slide-out-btn" text="All sessions"></Button>
-				<Button tap="selectView" class="slide-out-btn" text="Sponsors"></Button>
 
-				<Button tap="goToAcknowledgementPage" class="slide-out-btn" text="Ackknowledgements"></Button>
+				<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+					text="My agenda"></Button>
+				<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+					text="All session"></Button>
+				<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+					text="Sponsors"></Button>
 
-                <Button [nsRouterLink]="['/home']" class="slide-out-btn" nsRouterLinkActive="slide-out-btn-selected" text="My agenda" [nsRouterLinkActiveOptions]="{exact:true}"></Button>
-                <Button [nsRouterLink]="['/home/otherPath']" class="slide-out-btn" nsRouterLinkActive="slide-out-btn-selected" text="Sponsors"></Button>
+				<Button (tap)="goToAcknowledgementPage()" [class]="selectedViewIndex === 3 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+					text="Ackknowledgements"></Button>
 
-				<!-- anything you want in drawer -->
-				<!-- for example: -->
-				<!-- you want options {exact: true} on the first one because otherwise it would be considered active when 'Other Page' in active as well -->
-				<Button text="Home" [nsRouterLink]="['/home']" nsRouterLinkActive="active" [nsRouterLinkActiveOptions]="{exact:true}"></Button>
-
-				<Button text="Other Page" [nsRouterLink]="['/home/otherPath']" nsRouterLinkActive="active"></Button>
 			</StackLayout>
 		</GridLayout>
 
 
 	</StackLayout>
 	<StackLayout tkMainContent>
-		<router-outlet></router-outlet>
+
+		<GridLayout rows="auto, *">
+
+
+			<!-- Header -->
+			<StackLayout class="page-header">
+				<GridLayout class="action-bar darker">
+					<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
+						<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
+					</GridLayout>
+					<Label [text]="actionBarTitle" class="action-bar-title"></Label>
+				</GridLayout>
+
+				<GridLayout class="darker">
+					<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+				</GridLayout>
+
+				<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+
+			</StackLayout>
+
+
+
+			<!-- Sessions Views -->
+			<GridLayout rows="auto, *" row="1">
+				<!-- List -->
+				<ListView [items]="sessions | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
+					<template let-item="item" let-i="index">
+						<GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
+
+							<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
+								rows="auto">
+								<Image id="imgFav" stretch="none" class="icon-image" [src]="item.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' "></Image>
+							</GridLayout>
+
+							<StackLayout col="1">
+								<Label [text]="item.range" class="info-orange bold"></Label>
+								<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
+								<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+							</StackLayout>
+
+						</GridLayout>
+					</template>
+				</ListView>
+			</GridLayout>
+
+
+			<!-- Sponsors -->
+			<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
+
+				<Image src="res://sponsor_logo_fdg" stretch="aspectFit"></Image>
+				<Label class="info" textWrap="true" text="FDG - Global Provider of IT Services"></Label>
+				<Image src="res://sponsor_logo_umer" stretch="aspectFit"></Image>
+				<Label class="info" textWrap="true" text="UMER - Business Intelligence Experts"></Label>
+
+			</StackLayout>
+
+
+		</GridLayout>
+
 	</StackLayout>
 </RadSideDrawer>

@@ -59,7 +59,7 @@ export class DetailsComponent implements OnInit {
   }
 
   public backTap() {
-    this.routerExtensions.backToPreviousPage();
+    this.routerExtensions.back();
   }
 
   public showMapTap() {
