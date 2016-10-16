@@ -15,7 +15,10 @@
 
 			<!-- Content -->
 			<GridLayout row="1" class="content">
-				<Image id="imgMap" imageSource="{{ image }}" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center" swipe="backSwipe"></Image>
+				<StackLayout *ngIf="image">
+					<Image id="imgMap" [imageSource]="image | async" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center"
+						(swipe)="backSwipe()"></Image>
+				</StackLayout>
 				<ActivityIndicator [busy]="isLoading" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
 			</GridLayout>
 		</GridLayout>

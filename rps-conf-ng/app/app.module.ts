@@ -10,14 +10,18 @@ import { setStatusBarColors } from "./shared";
 
 import { SessionsService } from './services/sessions.service';
 import { DrawerService } from './services/drawer.service';
+import { RoomMapService } from "./services/room-map.service";
+
 import { SessionsModule } from "./sessions/sessions.module";
+
 
 setStatusBarColors();
 
 @NgModule({
   providers: [
     SessionsService,
-    DrawerService
+    DrawerService,
+    RoomMapService
   ],
   imports: [
     NativeScriptModule,
@@ -26,7 +30,7 @@ setStatusBarColors();
     SessionsModule,
   ],
   declarations: [
-      AppComponent
+    AppComponent
   ],
   bootstrap: [AppComponent]
 })

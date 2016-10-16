@@ -1,7 +1,8 @@
 // angular
-import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef, NgZone } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 // nativescript
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-telerik-ui/sidedrawer/angular';
@@ -12,9 +13,11 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 import { ImageSource } from 'image-source';
+import * as imageSourceModule from 'image-source';
 
 import { IRoomInfo } from '../../shared/interfaces';
 import { SessionsService } from '../../services/sessions.service';
+import { RoomMapService } from '../../services/room-map.service';
 import { SessionModel } from '../shared/session.model';
 
 
@@ -27,24 +30,25 @@ export class SessionMapComponent implements OnInit {
 
   public room: IRoomInfo;
 
-public isLoading: boolean = false;
-public image: ImageSource;
+  public isLoading: boolean = false;
+  public image: Observable<ImageSource>;
 
-
-  constructor(private _page: Page, private _sessionsService: SessionsService, private route: ActivatedRoute,
-    private location: Location, private routerExtensions: RouterExtensions) {
+  constructor(private _page: Page, private _sessionsService: SessionsService, private _roomMapService: RoomMapService, private route: ActivatedRoute,
+    private location: Location, private routerExtensions: RouterExtensions, private zone: NgZone) {
     this._page.actionBarHidden = true;
   }
 
   public ngOnInit() {
     this.route.params.forEach((params: Params) => {
+      this.isLoading = true;
       let id: string = params['id'];
-
-      console.log('details oninit id:' + id);
-
       this._sessionsService.getSessionById(id)
         .then((session: SessionModel) => {
-            this.room = session.roomInfo;
+          this.room = session.roomInfo;
+          this.image = Observable.fromPromise<ImageSource>(this._roomMapService.getRoomImage(this.room));
+          this.image.subscribe(observer => {
+            this.isLoading = false;
+          });
         });
     });
   }
