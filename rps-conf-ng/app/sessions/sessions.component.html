@@ -53,7 +53,7 @@
 				<!-- List -->
 				<ListView [items]="sessions | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
 					<template let-item="item" let-i="index">
-						<GridLayout columns="auto, *" class="{{ isBreak ? 'break-row' : 'list-view-row' }}">
+						<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
 							<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
 								rows="auto">
