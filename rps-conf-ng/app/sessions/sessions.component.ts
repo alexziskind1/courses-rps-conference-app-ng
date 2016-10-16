@@ -11,6 +11,8 @@ import { RadSideDrawerComponent } from 'nativescript-telerik-ui/sidedrawer/angul
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-telerik-ui/sidedrawer';
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
+import { Label } from 'ui/label';
+import { StackLayout } from 'ui/layouts/stack-layout';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
@@ -77,10 +79,12 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     @Inject(Page) private _page: Page,
     private _changeDetectionRef: ChangeDetectorRef,
     private _router: Router,
-    private _routerExtensions: RouterExtensions,
     private _location: Location,
     private _drawerService: DrawerService,
-    private _sessionsService: SessionsService, private zone: NgZone, private routerExtensions: RouterExtensions, private route: ActivatedRoute) {
+    private _sessionsService: SessionsService,
+    private _zone: NgZone,
+    private _routerExtensions: RouterExtensions,
+    private _route: ActivatedRoute) {
 
     _page.on("loaded", this.onLoaded, this);
     _page.backgroundSpanUnderStatusBar = true;
@@ -104,7 +108,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     console.log('home oninit');
-    this.route.params.forEach((params: Params) => {
+    this._route.params.forEach((params: Params) => {
       let id: string = params['id'];
 
       console.log('home oninit id:' + id);
@@ -131,7 +135,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   private publishUpdates() {
     // Make sure all updates are published inside NgZone so that change detection is triggered if needed
-    this.zone.run(() => {
+    this._zone.run(() => {
       // must emit a *new* value (immutability!)
       //console.log('in the zone, updating sessions');
       this.sessions.next([...this._sessionsService.allSessions]);
@@ -173,7 +177,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     if (!session.isBreak) {
       //console.log('select session ' + session.title);
       let link = ['/session-details', session.id];
-      this.routerExtensions.navigate(link);
+      this._routerExtensions.navigate(link);
       //navigationModule.gotoSessionPage(session);
     }
 
@@ -188,22 +192,21 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   }
 
 
-}
+  public goToAcknowledgementPage() {
+    //navigationModule.goToPageByFunction(navFactoryFunc);
+    console.log('goToAcknowledgementPage');
+    frameModule.topmost().navigate(this.navFactoryFunc);
+  }
 
-
-///////////////////////////////////////////// 
-/*
-import { Label } from 'ui/label';
-import { StackLayout } from 'ui/layouts/stack-layout';
-
-function navFactoryFunc() {
+  public navFactoryFunc() {
     var label = new Label();
     label.text = "App created by Nuvious";
-        
+
     var btnBack = new Button();
     btnBack.text = "back";
-    btnBack.on('tap', navigationModule.goBack);
-    
+    btnBack.on('tap', frameModule.goBack);
+
+
     var stackLayout = new StackLayout();
     stackLayout.addChild(label);
     stackLayout.addChild(btnBack);
@@ -211,10 +214,11 @@ function navFactoryFunc() {
     var dynamicPage = new Page();
     dynamicPage.content = stackLayout;
     return dynamicPage;
-};
+  };
 
-export function goToAcknowledgementPage() {
-    navigationModule.goToPageByFunction(navFactoryFunc);
 }
 
-*/
+
+
+
+
