@@ -1,5 +1,5 @@
 // angular
-import { Component, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy, Inject, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy, Inject, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
@@ -13,6 +13,7 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 import { StackLayout } from 'ui/layouts/stack-layout';
+import { SearchBar } from 'ui/search-bar';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
@@ -32,6 +33,7 @@ import { conferenceDays } from '../shared/static-data';
 export class SessionsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
+  @ViewChild('searchBar') public searchBar: ElementRef;
 
   private _selectedIndex: number;
   private _search = '';
@@ -145,13 +147,13 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     if (this.selectedViewIndex < 2) {
       this.filter();
     }
-
     this.actionBarTitle = pageTitle;
+    this.hideSearchKeyboard();
   }
 
   public selectSession(args: ItemEventData) {
     var session = <SessionModel>args.view.bindingContext;
-    //hideSearchKeyboard();
+    this.hideSearchKeyboard();
     if (!session.isBreak) {
       let link = ['/session-details', session.id];
       this._routerExtensions.navigate(link);
@@ -164,6 +166,17 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   public showSlideout(args: GestureEventData) {
     this._drawerService.showDrawer();
+    this.hideSearchKeyboard();
+  }
+
+  private hideSearchKeyboard() {
+    var searchBar = <SearchBar>this.searchBar.nativeElement;
+    if (searchBar.android) {
+      searchBar.android.clearFocus();
+    }
+    if (searchBar.ios) {
+      searchBar.ios.resignFirstResponder();
+    }
   }
 
   public goToAcknowledgementPage() {
