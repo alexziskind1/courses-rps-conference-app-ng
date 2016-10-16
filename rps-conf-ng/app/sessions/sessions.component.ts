@@ -34,8 +34,12 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
   //private _sideDrawerTransition: DrawerTransitionBase;
   //private _drawer: SideDrawerType;
-  isLoading = false;
   private _selectedIndex: number = 0;
+  private _search = '';
+
+
+  public isLoading = false;
+
   public selectedViewIndex: number = 1;
 
   public actionBarTitle: string = 'All sessions';
@@ -50,11 +54,11 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     return conferenceDays;
   }
 
-  get selectedIndex(): number {
+  public get selectedIndex(): number {
     //console.log('getting selectedIndex');
     return this._selectedIndex;
   }
-  set selectedIndex(value: number) {
+  public set selectedIndex(value: number) {
     //console.log('setting selectedIndex=' + value);
     if (this._selectedIndex !== value) {
       this._selectedIndex = value;
@@ -62,13 +66,26 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
       this.dayHeader = conferenceDays[value].desc;
 
-      /*
-                  if (this.search !== '') {
-                      this.search = '';
-                  } else {
-                      this.filter();
-                  }
-                  */
+      if (this.search !== '') {
+        this.search = '';
+      } else {
+        //var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
+        //this.publishUpdates();
+        this.filter();
+      }
+    }
+  }
+
+  public get search(): string {
+    return this._search;
+  }
+  public set search(value: string) {
+    if (this._search !== value) {
+      this._search = value;
+      //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "search", value: value });
+      //var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
+      //this.publishUpdates();
+      this.filter();
     }
   }
 
@@ -128,19 +145,25 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     var p = this._sessionsService.loadSessions<Array<ISession>>()
       .then((newSessions: Array<ISession>) => {
         //this._allSessions = newSessions.map(s => new SessionModel(s));
-
-        this.publishUpdates();
+        //this._sessionsService.filter()
+        //this.publishUpdates();
+        this.filter();
       });
   }
+
+  private filter() {
+    var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
+    this.publishUpdates();
+  }
+
+
 
   private publishUpdates() {
     // Make sure all updates are published inside NgZone so that change detection is triggered if needed
     this._zone.run(() => {
       // must emit a *new* value (immutability!)
       //console.log('in the zone, updating sessions');
-      this.sessions.next([...this._sessionsService.allSessions]);
-
-
+      this.sessions.next([...this._sessionsService.sessions]);
     });
   }
 
@@ -161,7 +184,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     this._drawerService.closeDrawer();
 
     if (this.selectedViewIndex < 2) {
-      //this.filter();
+      this.filter();
     }
     //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
     //this.set('actionBarTitle', titleText);

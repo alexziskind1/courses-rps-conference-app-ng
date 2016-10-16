@@ -11,9 +11,14 @@ export class SessionsService {
     public sessionsLoaded = false;
     private _useHttpService: boolean = false;
     private _allSessions: Array<SessionModel> = [];
+    private _sessions: Array<SessionModel> = [];
 
     public get allSessions() {
         return this._allSessions;
+    }
+
+    public get sessions() {
+        return this._sessions;
     }
 
     public loadSessions<T>(): Promise<T> {
@@ -69,6 +74,17 @@ export class SessionsService {
             let sessions = <any>fakeDataServiceModule.generateSessions(speakers, roomInfos);
             resolve(sessions);
         });
+    }
+
+    public filter(date: number, search: string, viewIndex: number) {
+        this._sessions = this._allSessions.filter(s => {
+            return s.startDt.getDate() === date
+                && s.title.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) >= 0;
+        });
+
+        if (viewIndex === 0) {
+            this._sessions = this._sessions.filter(i => { return i.favorite || i.isBreak; });
+        }
     }
 }
 
