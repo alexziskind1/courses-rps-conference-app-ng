@@ -8,7 +8,7 @@ import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular
 
 // nativescript
 import { RadSideDrawerComponent } from 'nativescript-telerik-ui/sidedrawer/angular';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-telerik-ui/sidedrawer';
+import { DrawerTransitionBase, SlideInOnTopTransition, ScaleUpTransition } from 'nativescript-telerik-ui/sidedrawer';
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
@@ -32,22 +32,15 @@ import { conferenceDays } from '../shared/static-data';
 export class SessionsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-  //private _sideDrawerTransition: DrawerTransitionBase;
-  //private _drawer: SideDrawerType;
-  private _selectedIndex: number = 0;
+
+  private _selectedIndex: number;
   private _search = '';
 
-
-  public isLoading = false;
-
-  public selectedViewIndex: number = 1;
-
+  public isLoading = true;
+  public selectedViewIndex: number;
   public actionBarTitle: string = 'All sessions';
   public dayHeader: string = '';
-
-  //public sessions: Observable<Array<SessionModel>>;
   public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
-  //private _allSessions: Array<SessionModel> = [];
 
 
   public get confDayOptions(): Array<IConferenceDay> {
@@ -55,22 +48,16 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   }
 
   public get selectedIndex(): number {
-    //console.log('getting selectedIndex');
     return this._selectedIndex;
   }
   public set selectedIndex(value: number) {
-    //console.log('setting selectedIndex=' + value);
     if (this._selectedIndex !== value) {
       this._selectedIndex = value;
-      //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "selectedIndex", value: value });
-
       this.dayHeader = conferenceDays[value].desc;
 
       if (this.search !== '') {
         this.search = '';
       } else {
-        //var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
-        //this.publishUpdates();
         this.filter();
       }
     }
@@ -82,15 +69,9 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   public set search(value: string) {
     if (this._search !== value) {
       this._search = value;
-      //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "search", value: value });
-      //var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
-      //this.publishUpdates();
       this.filter();
     }
   }
-
-
-
 
   constructor(
     @Inject(Page) private _page: Page,
@@ -103,52 +84,36 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     private _routerExtensions: RouterExtensions,
     private _route: ActivatedRoute) {
 
-    _page.on("loaded", this.onLoaded, this);
     _page.backgroundSpanUnderStatusBar = true;
+
+    this.selectedIndex = 0;
+    this.selectedViewIndex = 1;
   }
 
-  public get sideDrawerTransition(): DrawerTransitionBase {
-    //return this._sideDrawerTransition;
-    return this._drawerService.sideDrawerTransition;
-  }
-
-  public toggle() {
-    //this._drawer.toggleDrawerState();
-    this._drawerService.toggleDrawerState();
-  }
-
-
-  public onLoaded(args) {
-    this._drawerService.sideDrawerTransition = new SlideInOnTopTransition();
-    //this._sideDrawerTransition = new SlideInOnTopTransition();
-  }
-
-  ngOnInit() {
-    console.log('home oninit');
+  public ngOnInit() {
     this._route.params.forEach((params: Params) => {
       let id: string = params['id'];
-
-      console.log('home oninit id:' + id);
-
       this.selectedViewIndex = parseInt(id);
     });
 
-
     this._router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        //this._drawer.closeDrawer();
         this._drawerService.closeDrawer();
       }
     });
 
-    //console.log('list on init. sessionsloaded= ' + this._sessionsService.sessionsLoaded);
     var p = this._sessionsService.loadSessions<Array<ISession>>()
       .then((newSessions: Array<ISession>) => {
-        //this._allSessions = newSessions.map(s => new SessionModel(s));
-        //this._sessionsService.filter()
-        //this.publishUpdates();
         this.filter();
       });
+  }
+
+  public get sideDrawerTransition(): DrawerTransitionBase {
+    return this._drawerService.sideDrawerTransition;
+  }
+
+  public toggle() {
+    this._drawerService.toggleDrawerState();
   }
 
   private filter() {
@@ -156,26 +121,20 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     this.publishUpdates();
   }
 
-
-
   private publishUpdates() {
     // Make sure all updates are published inside NgZone so that change detection is triggered if needed
     this._zone.run(() => {
       // must emit a *new* value (immutability!)
-      //console.log('in the zone, updating sessions');
       this.sessions.next([...this._sessionsService.sessions]);
     });
   }
 
-  ngAfterViewInit() {
-    //this._drawer = this.drawerComponent.sideDrawer;
-    //this._changeDetectionRef.detectChanges();
-
+  public ngAfterViewInit() {
     this._drawerService.initDrawer(this.drawerComponent.sideDrawer);
     this._changeDetectionRef.detectChanges();
   }
 
-  showActivityIndicator() {
+  public showActivityIndicator() {
     this.isLoading = true;
   }
 
@@ -186,24 +145,17 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     if (this.selectedViewIndex < 2) {
       this.filter();
     }
-    //this.notify({ object: this, eventName: Observable.propertyChangeEvent, propertyName: "selectedViewIndex", value: this.selectedViewIndex });
-    //this.set('actionBarTitle', titleText);
-    //this.set('isSessionsPage', this.selectedViewIndex < 2);
 
     this.actionBarTitle = pageTitle;
   }
-
 
   public selectSession(args: ItemEventData) {
     var session = <SessionModel>args.view.bindingContext;
     //hideSearchKeyboard();
     if (!session.isBreak) {
-      //console.log('select session ' + session.title);
       let link = ['/session-details', session.id];
       this._routerExtensions.navigate(link);
-      //navigationModule.gotoSessionPage(session);
     }
-
   }
 
   public toggleFavorite(session: SessionModel) {
@@ -214,9 +166,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     this._drawerService.showDrawer();
   }
 
-
   public goToAcknowledgementPage() {
-    //navigationModule.goToPageByFunction(navFactoryFunc);
     console.log('goToAcknowledgementPage');
     frameModule.topmost().navigate(this.navFactoryFunc);
   }
