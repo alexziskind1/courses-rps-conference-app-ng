@@ -1,12 +1,14 @@
 import * as application from "application";
 import * as platform from "platform";
 import * as utils from "utils/utils";
+import * as frameModule from 'ui/frame';
 
 declare var android: any;
 declare var UIResponder: any;
 declare var UIStatusBarStyle: any;
 declare var UIApplication: any;
 declare var UIApplicationDelegate: any;
+declare var UIColor: any;
 
 export function setStatusBarColors() {
   console.log('setStatusBarColors');
@@ -16,11 +18,10 @@ export function setStatusBarColors() {
   if (application.ios) {
     console.log('setStatusBarColors ios');
     const AppDelegate = UIResponder.extend({
-      applicationDidFinishLaunchingWithOptions: function() {
+      applicationDidFinishLaunchingWithOptions: function () {
         // Allow for XCode 8 API changes
         //utils.ios.getter(UIApplication, UIApplication.sharedApplication).statusBarStyle = UIStatusBarStyle.LightContent;
-        UIApplication.sharedApplication.statusBarStyle = 1; 
-        console.log('setStatusBarColors utils.ios style: ' + UIStatusBarStyle.LightContent);
+        UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyle.LightContent;
         return true;
       }
     }, {
@@ -34,7 +35,7 @@ export function setStatusBarColors() {
   // See http://bradmartin.net/2016/03/10/fullscreen-and-navigation-bar-color-in-a-nativescript-android-app/
   // for details on the technique used.
   if (application.android) {
-    application.android.onActivityStarted = function() {
+    application.android.onActivityStarted = function () {
       if (application.android && platform.device.sdkVersion >= "21") {
         const View = android.view.View;
         const window = application.android.startActivity.getWindow();
@@ -48,5 +49,14 @@ export function setStatusBarColors() {
           | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
       }
     };
+  }
+}
+
+export function configureiOSBackgroundColor() {
+  var iosFrame = frameModule.topmost().ios;
+  if (iosFrame) {
+    // Fix status bar color and nav bar vidibility
+    iosFrame.controller.view.window.backgroundColor = UIColor.blackColor;
+    iosFrame.navBarVisibility = 'never';
   }
 }
