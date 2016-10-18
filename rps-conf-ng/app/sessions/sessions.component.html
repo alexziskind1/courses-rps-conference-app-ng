@@ -18,72 +18,85 @@
 			</StackLayout>
 		</GridLayout>
 
-
 	</StackLayout>
 	<StackLayout tkMainContent>
-		<GridLayout rows="auto, *">
 
+		<AbsoluteLayout class="main-wrapper">
 
-			<!-- Header -->
-			<StackLayout class="page-header">
-				<GridLayout class="action-bar darker">
-					<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
-						<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
-					</GridLayout>
-					<Label [text]="actionBarTitle" class="action-bar-title"></Label>
-				</GridLayout>
+			<GridLayout rows="auto, *" class="main-grid">
 
-				<GridLayout class="darker">
-					<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
-				</GridLayout>
-
-				<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
-
-			</StackLayout>
-
-
-
-			<!-- Sessions Views -->
-			<GridLayout rows="auto, *" row="1">
-
-				<!-- Search -->
-				<SearchBar #searchBar [(ngModel)]="search" hint="Search" class="search" textFieldBackgroundColor="white"></SearchBar>
-
-
-				<!-- List -->
-				<ListView [items]="sessions | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
-					<template let-item="item" let-i="index">
-						<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
-
-							<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
-								rows="auto">
-								<Image id="imgFav" stretch="none" class="icon-image" [src]="item.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' "></Image>
-							</GridLayout>
-
-							<StackLayout col="1">
-								<Label [text]="item.range" class="info-orange bold"></Label>
-								<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
-								<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
-							</StackLayout>
-
+				<!-- Header -->
+				<StackLayout class="page-header">
+					<GridLayout class="action-bar darker">
+						<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
+							<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
 						</GridLayout>
-					</template>
-				</ListView>
+						<Label [text]="actionBarTitle" class="action-bar-title"></Label>
+					</GridLayout>
+
+					<GridLayout class="darker">
+						<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+					</GridLayout>
+
+					<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+
+				</StackLayout>
+
+
+
+				<!-- Sessions Views -->
+				<GridLayout rows="auto, *" row="1">
+
+					<!-- Search -->
+					<SearchBar #searchBar [(ngModel)]="search" hint="Search" class="search" textFieldBackgroundColor="white"></SearchBar>
+
+					<!-- List -->
+					<ListView [items]="sessions | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
+						<template let-item="item" let-i="index">
+							<GridLayout columns="auto, *" (longpress)="longPressSession(item)" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
+
+								<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
+									rows="auto">
+									<Image id="imgFav" stretch="none" class="icon-image" [src]="item.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' "></Image>
+								</GridLayout>
+
+								<StackLayout col="1">
+									<Label [text]="item.range" class="info-orange bold"></Label>
+									<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
+									<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+								</StackLayout>
+
+							</GridLayout>
+						</template>
+					</ListView>
+				</GridLayout>
+
+
+				<!-- Sponsors -->
+				<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
+
+					<Image src="res://sponsor_logo_fdg" stretch="aspectFit"></Image>
+					<Label class="info" textWrap="true" text="FDG - Global Provider of IT Services"></Label>
+					<Image src="res://sponsor_logo_umer" stretch="aspectFit"></Image>
+					<Label class="info" textWrap="true" text="UMER - Business Intelligence Experts"></Label>
+
+				</StackLayout>
+
 			</GridLayout>
 
+			<GridLayout width="100%" height="100%">
+				<StackLayout class="card modal" horizontalAlignment="center" verticalAlignment="center">
+					<StackLayout class="inner">
+						<StackLayout class="info">
+							<Label class="h2" text="Your reservation is complete"></Label>
+							<TextView class="body" text="Come meet the robots on Satudrtday at 2pm."></TextView>
+							<Button class="btn btn-primary" text="Make another reservation"></Button>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+			</GridLayout>
 
-			<!-- Sponsors -->
-			<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
-
-				<Image src="res://sponsor_logo_fdg" stretch="aspectFit"></Image>
-				<Label class="info" textWrap="true" text="FDG - Global Provider of IT Services"></Label>
-				<Image src="res://sponsor_logo_umer" stretch="aspectFit"></Image>
-				<Label class="info" textWrap="true" text="UMER - Business Intelligence Experts"></Label>
-
-			</StackLayout>
-
-
-		</GridLayout>
+		</AbsoluteLayout>
 
 	</StackLayout>
 </RadSideDrawer>

@@ -28,6 +28,7 @@ import { conferenceDays } from '../shared/static-data';
   moduleId: module.id,
   selector: 'sessions',
   templateUrl: 'sessions.component.html',
+  styleUrls: ['sessions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionsComponent implements OnInit, AfterViewInit {
@@ -158,6 +159,10 @@ export class SessionsComponent implements OnInit, AfterViewInit {
       let link = ['/session-details', session.id];
       this._routerExtensions.navigate(link);
     }
+  }
+
+  public longPressSession(item: SessionModel) {
+    console.log('long press: ' + item.title);
   }
 
   public toggleFavorite(session: SessionModel) {
