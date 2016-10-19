@@ -44,7 +44,8 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   public actionBarTitle: string = 'All sessions';
   public dayHeader: string = '';
   public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
-
+  public session = {};
+  public sessionPopupVisible: boolean = false;
 
   public get confDayOptions(): Array<IConferenceDay> {
     return conferenceDays;
@@ -163,6 +164,12 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   public longPressSession(item: SessionModel) {
     console.log('long press: ' + item.title);
+    this.session = item;
+    this.sessionPopupVisible = true;
+  }
+
+  public closeSessionPopup() {
+    this.sessionPopupVisible = false;
   }
 
   public toggleFavorite(session: SessionModel) {
@@ -213,3 +220,4 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
 
 
+var a = 2;
