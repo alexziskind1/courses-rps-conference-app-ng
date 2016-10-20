@@ -24,7 +24,8 @@ import { SessionModel } from '../shared/session.model';
 @Component({
   moduleId: module.id,
   selector: 'session-map',
-  templateUrl: 'session-map.component.html'
+  templateUrl: 'session-map.component.html',
+  styleUrls: ['session-map.component.css']
 })
 export class SessionMapComponent implements OnInit {
 

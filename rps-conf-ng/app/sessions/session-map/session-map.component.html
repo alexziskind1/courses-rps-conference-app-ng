@@ -1,4 +1,4 @@
-<StackLayout>
+<StackLayout class="session-map-wrapper">
 	<StackLayout *ngIf="room">
 		<GridLayout rows="auto, *">
 			<!-- HEADER -->
@@ -17,7 +17,7 @@
 			<GridLayout row="1" class="content">
 				<StackLayout *ngIf="image">
 					<Image id="imgMap" [imageSource]="image | async" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center"
-						(swipe)="backSwipe()"></Image>
+						(swipe)="backSwipe($event)"></Image>
 				</StackLayout>
 				<ActivityIndicator [busy]="isLoading" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
 			</GridLayout>

@@ -1,5 +1,5 @@
 //angular
-import { Component, Input, ViewChild, OnInit, ChangeDetectionStrategy, NgZone, ElementRef } from "@angular/core";
+import { Component, Input, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 
@@ -21,7 +21,7 @@ import { conferenceDays, hideSearchKeyboard } from '../../shared';
     moduleId: module.id,
     selector: "session-list",
     templateUrl: "session-list.component.html",
-    changeDetection: ChangeDetectionStrategy.OnPush
+    //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionListComponent implements OnInit {
 
@@ -75,6 +75,7 @@ export class SessionListComponent implements OnInit {
         this.selectedIndex = 0;
         //this.selectedViewIndex = 1;
     }
+
 
     public ngOnInit() {
         var p = this._sessionsService.loadSessions<Array<ISession>>()

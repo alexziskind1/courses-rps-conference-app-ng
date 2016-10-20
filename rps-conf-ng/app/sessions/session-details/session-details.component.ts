@@ -1,7 +1,7 @@
 
 
 // angular
-import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, Inject, Output, EventEmitter, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -28,6 +28,8 @@ export class SessionDetailsComponent implements OnInit {
 
   public session: SessionModel;
 
+  @Output() favorited = new EventEmitter();
+
   @ViewChild('btnDesc') btnDesc: ElementRef;
   @ViewChild('lblDesc') lblDesc: ElementRef;
 
@@ -35,6 +37,12 @@ export class SessionDetailsComponent implements OnInit {
   constructor(private _page: Page, private _sessionsService: SessionsService, private route: ActivatedRoute,
     private location: Location, private routerExtensions: RouterExtensions) {
     this._page.actionBarHidden = true;
+
+
+    this.favorited.subscribe((f) => {
+      console.log('subscription hit');
+      console.dir(f);
+    });
   }
 
   public ngOnInit() {
@@ -63,13 +71,14 @@ export class SessionDetailsComponent implements OnInit {
   }
 
   public showMapTap() {
-      //console.log('select session ' + session.title);
-      let link = ['/session-map', this.session.id];
-      this.routerExtensions.navigate(link);
+    //console.log('select session ' + session.title);
+    let link = ['/session-map', this.session.id];
+    this.routerExtensions.navigate(link);
   }
 
   public toggleFavorite() {
     this.session.toggleFavorite();
+    this.favorited.next(this.session.favorite);
   }
 
   public toogleDescription() {
