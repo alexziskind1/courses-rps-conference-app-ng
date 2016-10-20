@@ -4,9 +4,10 @@ import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
+
 
 // nativescript
+import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
 import { RadSideDrawerComponent } from 'nativescript-telerik-ui/sidedrawer/angular';
 import { DrawerTransitionBase, SlideInOnTopTransition, ScaleUpTransition } from 'nativescript-telerik-ui/sidedrawer';
 import { Page } from "ui/page";
@@ -22,7 +23,8 @@ import { ISession, IConferenceDay } from '../shared/interfaces';
 import { SessionsService } from '../services/sessions.service';
 import { DrawerService } from '../services/drawer.service';
 import { SessionModel } from './shared/session.model';
-import { conferenceDays } from '../shared/static-data';
+//import { conferenceDays } from '../shared/static-data';
+import { hideSearchKeyboard, conferenceDays } from '../shared';
 
 @Component({
   moduleId: module.id,
@@ -35,45 +37,49 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
   @ViewChild('searchBar') public searchBar: ElementRef;
 
-  private _selectedIndex: number;
-  private _search = '';
+  //private _selectedIndex: number;
+  //private _search = '';
 
   public isLoading = true;
   public selectedViewIndex: number;
   public actionBarTitle: string = 'All sessions';
-  public dayHeader: string = '';
-  public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
+  //public dayHeader: string = '';
+  //public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
 
 
   public get confDayOptions(): Array<IConferenceDay> {
     return conferenceDays;
   }
 
-  public get selectedIndex(): number {
-    return this._selectedIndex;
-  }
-  public set selectedIndex(value: number) {
-    if (this._selectedIndex !== value) {
-      this._selectedIndex = value;
-      this.dayHeader = conferenceDays[value].desc;
+  /*
+    public get selectedIndex(): number {
+      return this._selectedIndex;
+    }
+    public set selectedIndex(value: number) {
+      if (this._selectedIndex !== value) {
+        this._selectedIndex = value;
+        this.dayHeader = conferenceDays[value].desc;
+  
+        if (this.search !== '') {
+          this.search = '';
+        } else {
+          this.filter();
+        }
+      }
+    }
+    */
 
-      if (this.search !== '') {
-        this.search = '';
-      } else {
+  /*
+    public get search(): string {
+      return this._search;
+    }
+    public set search(value: string) {
+      if (this._search !== value) {
+        this._search = value;
         this.filter();
       }
     }
-  }
-
-  public get search(): string {
-    return this._search;
-  }
-  public set search(value: string) {
-    if (this._search !== value) {
-      this._search = value;
-      this.filter();
-    }
-  }
+    */
 
   constructor(
     @Inject(Page) private _page: Page,
@@ -88,15 +94,17 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
     _page.backgroundSpanUnderStatusBar = true;
 
-    this.selectedIndex = 0;
+    //this.selectedIndex = 0;
     this.selectedViewIndex = 1;
   }
 
   public ngOnInit() {
+    /*
     this._route.params.forEach((params: Params) => {
       let id: string = params['id'];
       this.selectedViewIndex = parseInt(id);
     });
+    */
 
     this._router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -104,10 +112,12 @@ export class SessionsComponent implements OnInit, AfterViewInit {
       }
     });
 
-    var p = this._sessionsService.loadSessions<Array<ISession>>()
-      .then((newSessions: Array<ISession>) => {
-        this.filter();
-      });
+    /*
+        var p = this._sessionsService.loadSessions<Array<ISession>>()
+          .then((newSessions: Array<ISession>) => {
+            this.filter();
+          });
+          */
   }
 
   public get sideDrawerTransition(): DrawerTransitionBase {
@@ -118,18 +128,22 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     this._drawerService.toggleDrawerState();
   }
 
-  private filter() {
-    var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
-    this.publishUpdates();
-  }
+  /*
+    private filter() {
+      var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
+      this.publishUpdates();
+    }
+    */
 
-  private publishUpdates() {
-    // Make sure all updates are published inside NgZone so that change detection is triggered if needed
-    this._zone.run(() => {
-      // must emit a *new* value (immutability!)
-      this.sessions.next([...this._sessionsService.sessions]);
-    });
-  }
+  /*
+    private publishUpdates() {
+      // Make sure all updates are published inside NgZone so that change detection is triggered if needed
+      this._zone.run(() => {
+        // must emit a *new* value (immutability!)
+        this.sessions.next([...this._sessionsService.sessions]);
+      });
+    }
+    */
 
   public ngAfterViewInit() {
     this._drawerService.initDrawer(this.drawerComponent.sideDrawer);
@@ -140,44 +154,52 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
   }
 
+
   public selectView(viewIndex: number, pageTitle: string) {
     this.selectedViewIndex = viewIndex;
     this._drawerService.closeDrawer();
 
-    if (this.selectedViewIndex < 2) {
-      this.filter();
-    }
+    /*
+        if (this.selectedViewIndex < 2) {
+          this.filter();
+        }
+        */
     this.actionBarTitle = pageTitle;
-    this.hideSearchKeyboard();
+    //this.hideSearchKeyboard();
   }
 
-  public selectSession(args: ItemEventData) {
-    var session = <SessionModel>args.view.bindingContext;
-    this.hideSearchKeyboard();
-    if (!session.isBreak) {
-      let link = ['/session-details', session.id];
-      this._routerExtensions.navigate(link);
+
+  /*
+    public selectSession(args: ItemEventData) {
+      var session = <SessionModel>args.view.bindingContext;
+      this.hideSearchKeyboard();
+      if (!session.isBreak) {
+        let link = ['/session-details', session.id];
+        this._routerExtensions.navigate(link);
+      }
     }
-  }
-
-  public toggleFavorite(session: SessionModel) {
-    session.toggleFavorite();
-  }
+  
+    public toggleFavorite(session: SessionModel) {
+      session.toggleFavorite();
+    }
+    */
 
   public showSlideout(args: GestureEventData) {
     this._drawerService.showDrawer();
-    this.hideSearchKeyboard();
+    //hideSearchKeyboard(this.searchBar.nativeElement);
   }
 
-  private hideSearchKeyboard() {
-    var searchBar = <SearchBar>this.searchBar.nativeElement;
-    if (searchBar.android) {
-      searchBar.android.clearFocus();
+  /*
+    private hideSearchKeyboard() {
+      var searchBar = <SearchBar>this.searchBar.nativeElement;
+      if (searchBar.android) {
+        searchBar.android.clearFocus();
+      }
+      if (searchBar.ios) {
+        searchBar.ios.resignFirstResponder();
+      }
     }
-    if (searchBar.ios) {
-      searchBar.ios.resignFirstResponder();
-    }
-  }
+    */
 
   public goToAcknowledgementPage() {
     console.log('goToAcknowledgementPage');

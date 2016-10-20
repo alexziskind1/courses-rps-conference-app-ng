@@ -8,7 +8,8 @@ import { sessionsRouting } from "./sessions.routing";
 import { SessionsComponent } from "./sessions.component";
 import { SessionDetailsComponent } from "./session-details/session-details.component";
 import { SessionMapComponent } from "./session-map/session-map.component";
-//import { SessionsListComponent } from "./session-list/session-list.component";
+import { SessionListComponent } from "./session-list/session-list.component";
+import { SponsorsListComponent } from "./sponsors-list/sponsors-list.component";
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { SessionMapComponent } from "./session-map/session-map.component";
     SessionsComponent,
     SessionDetailsComponent,
     SessionMapComponent,
+    SessionListComponent,
+    SponsorsListComponent,
     SIDEDRAWER_DIRECTIVES
   ]
 })
-export class SessionsModule {}
+export class SessionsModule { }
