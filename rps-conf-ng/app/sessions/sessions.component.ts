@@ -13,16 +13,27 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 import { StackLayout } from 'ui/layouts/stack-layout';
+import { GridLayout } from 'ui/layouts/grid-layout';
 import { SearchBar } from 'ui/search-bar';
 import { ItemEventData } from 'ui/list-view';
-import { GestureEventData } from 'ui/gestures';
+import { GestureEventData, GestureEventDataWithState } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
+import * as animationModule from 'ui/animation';
+import * as colorModule from 'color';
+
 
 import { ISession, IConferenceDay } from '../shared/interfaces';
 import { SessionsService } from '../services/sessions.service';
 import { DrawerService } from '../services/drawer.service';
 import { SessionModel } from './shared/session.model';
 import { conferenceDays } from '../shared/static-data';
+
+
+declare var UIView, UIColor, UIBlurEffect, UIBlurEffectStyle, UIVisualEffectView, UIBlurEffectStyleDark, UIBlurEffectStyleLight, UIViewAutoresizingFlexibleWidth, UIViewAutoresizingFlexibleHeight;
+
+
+let _blurEffectView = null;
+
 
 @Component({
   moduleId: module.id,
@@ -35,6 +46,8 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
   @ViewChild('searchBar') public searchBar: ElementRef;
+  @ViewChild('sessionPopupWrapper') public sessionPopupWrapper: ElementRef;
+  @ViewChild('sessionPopupCard') public sessionPopupCard: ElementRef;
 
   private _selectedIndex: number;
   private _search = '';
@@ -89,6 +102,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     private _route: ActivatedRoute) {
 
     _page.backgroundSpanUnderStatusBar = true;
+    _page.backgroundColor = new colorModule.Color("#fac950");
 
     this.selectedIndex = 0;
     this.selectedViewIndex = 1;
@@ -156,20 +170,158 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   public selectSession(args: ItemEventData) {
     var session = <SessionModel>args.view.bindingContext;
     this.hideSearchKeyboard();
+
+    let anidef: animationModule.AnimationDefinition = {
+      duration: 200,
+      scale: { x: 1.1, y: 1.1 }
+    };
+
+    args.view.animate(anidef);
+    //console.dir(args.view.page.parent.backgroundColor);
+
+
+    //TODO if iOS
+    //args.view.page.parent.ios.controller.view.backgroundColor = UIColor.blackColor;
+
+    /*
     if (!session.isBreak) {
       let link = ['/session-details', session.id];
       this._routerExtensions.navigate(link);
     }
+    */
+
+
   }
 
-  public longPressSession(item: SessionModel) {
+  private blurIt(viewBack) {
+
+    let sessionPopupGrid = <GridLayout>this.sessionPopupWrapper.nativeElement;
+
+    let view = sessionPopupGrid.ios;
+
+    view.backgroundColor = UIColor.clear;
+
+
+    if (_blurEffectView != null) {
+      console.log('blurView exists');
+      _blurEffectView.removeFromSuperview();
+    }
+
+    //let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleDark);
+
+    let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleLight);
+
+
+    _blurEffectView = UIVisualEffectView.alloc().initWithEffect(blurEffect);
+    //always fill the view
+    _blurEffectView.frame = view.bounds;
+    //blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight];
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    _blurEffectView.alpha = 0.8;
+
+    //view.addSubview(blurEffectView); //if you have more UIViews, use an insertSubview API to place it where needed
+
+    view.insertSubviewAtIndex(_blurEffectView, 0);
+
+  }
+
+
+
+  private blurAnimate() {
+    let sessionPopupGrid = <GridLayout>this.sessionPopupWrapper.nativeElement;
+    let view = sessionPopupGrid.ios;
+    //view.backgroundColor = UIColor.clear;
+
+
+    if (_blurEffectView != null) {
+      console.log('blurView exists');
+      _blurEffectView.removeFromSuperview();
+    }
+
+    _blurEffectView = UIVisualEffectView.alloc().init();
+    _blurEffectView.frame = view.bounds;
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    view.insertSubviewAtIndex(_blurEffectView, 0);
+
+    let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleLight);
+
+    UIView.animateWithDurationAnimations(0.5, () => {
+      _blurEffectView.effect = blurEffect;
+    });
+
+    /*
+        UIView.animateWithDurationDelayUsingSpringWithDampingInitialSpringVelocityOptionsAnimationsCompletion(
+          1.5,
+          0.5,
+          1,
+          1,
+          null,
+          function () {
+            _blurEffectView.effect = blurEffect;
+          },
+          function () {
+            console.log('done');
+          }
+        );
+        */
+
+  }
+
+
+  private _sessionRowView;
+
+  private scaleAnimate(view, zoomin: boolean) {
+    let scale = { x: 1.0, y: 1.0 };
+
+    if (zoomin) {
+      scale = { x: 2, y: 2 };
+    }
+
+    let anidef: animationModule.AnimationDefinition = {
+      duration: 200,
+      scale: scale
+    };
+
+    view.animate(anidef);
+
+    /*
+        let aniRootDef: animationModule.AnimationDefinition = {
+          duration: 200,
+          scale: { x: 0.9, y: 0.9 }
+        };
+    
+        view.parent.parent.parent.animate(aniRootDef);
+        */
+
+  }
+
+  public longPressSession(args: ItemEventData, item: SessionModel) {
+    if (this.sessionPopupVisible)
+      return;
+
+    this._sessionRowView = args.view;
     console.log('long press: ' + item.title);
     this.session = item;
     this.sessionPopupVisible = true;
+
+    //this.blurIt(args.view.ios);
+    //this.blurIt(args.view.parent.parent.parent.ios);
+    this.blurAnimate();
+    this.scaleAnimate(args.view, true);
+
+    let card = <StackLayout>this.sessionPopupCard.nativeElement;
+
+    card.className = card.className.replace('session-card', '');
+    card.className = card.className.trim() + ' session-card';
+    console.log('classes: ' + card.className);
+
   }
 
   public closeSessionPopup() {
     this.sessionPopupVisible = false;
+    this.scaleAnimate(this._sessionRowView, false);
   }
 
   public toggleFavorite(session: SessionModel) {
@@ -220,4 +372,4 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
 
 
-var a = 2;
+var a = 5;

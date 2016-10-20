@@ -1,3 +1,5 @@
+@import '../animate.css'; 
+
 .main-wrapper {
 
 }
@@ -15,6 +17,17 @@
     border-radius: 4;
 
     width: 250;
+
+}
+
+
+.session-card {
+    animation-name: bounceIn;
+    animation-duration: 0.7s;
+}
+
+
+.speaker-image {
 
 }
 

@@ -53,7 +53,7 @@
 					<!-- List -->
 					<ListView [items]="sessions | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
 						<template let-item="item" let-i="index">
-							<GridLayout columns="auto, *" (longpress)="longPressSession(item)" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
+							<GridLayout columns="auto, *" (longpress)="longPressSession($event, item)" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
 								<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
 									rows="auto">
@@ -84,50 +84,50 @@
 
 			</GridLayout>
 
-			<GridLayout *ngIf="sessionPopupVisible" width="100%" height="100%" [visibility]="sessionPopupVisible ? 'visible' : 'collapsed' ">
-				<StackLayout class="card modal" horizontalAlignment="center" verticalAlignment="center">
-					<StackLayout class="inner">
-						<Image stretch="none" class="icon-image" src="~/images/icon-40.png"></Image>
+			<GridLayout width="100%" height="100%" (tap)="closeSessionPopup()" [visibility]="sessionPopupVisible ? 'visible' : 'collapsed' ">
+				<GridLayout #sessionPopupWrapper>
+					<StackLayout #sessionPopupCard class="card " horizontalAlignment="center" verticalAlignment="center">
+						<StackLayout class="inner">
+							<StackLayout class="">
+								<!-- Content -->
+								<ScrollView row="1" id="scroll">
+									<GridLayout row="1" rows="auto, auto, auto, auto, *" columns="56, *" class="content">
+										<!-- Description -->
+										<Label #lblDesc class="description" textWrap="true" col="1" id="txtDescription" [text]="session.descriptionShort"></Label>
 
-						<StackLayout class="">
-							<!-- Content -->
-							<ScrollView row="1" id="scroll">
-								<GridLayout row="1" rows="auto, auto, auto, auto, *" columns="56, *" class="content">
-									<!-- Description -->
-									<Label #lblDesc class="description" textWrap="true" col="1" id="txtDescription" [text]="session.descriptionShort"></Label>
+										<!-- Button -->
+										<Button #btnDesc text="MORE" (tap)="toogleDescription()" class="more-button" row="1" col="1"></Button>
 
-									<!-- Button -->
-									<Button #btnDesc text="MORE" (tap)="toogleDescription()" class="more-button" row="1" col="1"></Button>
+										<!-- Line -->
+										<StackLayout class="horizontal-line" row="2" col="1" margin="0 0 0 0"></StackLayout>
 
-									<!-- Line -->
-									<StackLayout class="horizontal-line" row="2" col="1" margin="0 0 0 0"></StackLayout>
+										<!-- Speakers -->
+										<Label text="SPEAKERS" class="section-header" row="3" col="1"></Label>
 
-									<!-- Speakers -->
-									<Label text="SPEAKERS" class="section-header" row="3" col="1"></Label>
+										<ListView *ngIf="sessionPopupVisible" id="sepakers-list" [items]="session.speakers" row="4" colSpan="2" height="{{ session.speakers.length * 72 + 46 }}"
+											selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
+											<template let-item="item">
+												<GridLayout columns="56, *" class="speakers-row" (swipe)="backSwipe($event)">
+													<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
 
-									<ListView id="sepakers-list" [items]="session.speakers" row="4" colSpan="2" height="{{ session.speakers.length * 72 + 46 }}"
-										selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
-										<template let-item="item">
-											<GridLayout columns="56, *" class="speakers-row" (swipe)="backSwipe($event)">
-												<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
+													<StackLayout col="1">
+														<StackLayout orientation="horizontal">
+															<Label [text]="item.name" class="info bold"></Label>
+															<Label [text]="item.twitterName ? ' (' + item.twitterName + ')' : '' " class="info" style="color: #A17201;"></Label>
+														</StackLayout>
 
-												<StackLayout col="1">
-													<StackLayout orientation="horizontal">
-														<Label [text]="item.name" class="info bold"></Label>
-														<Label [text]="item.twitterName ? ' (' + item.twitterName + ')' : '' " class="info" style="color: #A17201;"></Label>
+														<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
 													</StackLayout>
-
-													<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
-												</StackLayout>
-											</GridLayout>
-										</template>
-									</ListView>
-								</GridLayout>
-							</ScrollView>
-							<Button class="btn btn-primary" text="Close" (tap)="closeSessionPopup()"></Button>
+												</GridLayout>
+											</template>
+										</ListView>
+									</GridLayout>
+								</ScrollView>
+								<Button class="btn btn-primary" text="Close" (tap)="closeSessionPopup()"></Button>
+							</StackLayout>
 						</StackLayout>
 					</StackLayout>
-				</StackLayout>
+				</GridLayout>
 			</GridLayout>
 
 		</AbsoluteLayout>
