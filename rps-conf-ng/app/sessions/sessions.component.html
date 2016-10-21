@@ -33,19 +33,20 @@
 					<Label [text]="actionBarTitle" class="action-bar-title"></Label>
 				</GridLayout>
 
-				<GridLayout class="darker">
-					<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
-				</GridLayout>
+				<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
+					<GridLayout class="darker">
+						<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+					</GridLayout>
 
-				<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
-
+					<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+				</StackLayout>
 			</StackLayout>
 
 
 
 			<!-- Sessions Views -->
 			<GridLayout rows="auto, *" row="1">
-				<session-list [selectedViewIndex]="selectedViewIndex"></session-list>
+				<session-list [selectedViewIndex]="selectedViewIndex" [selectedIndex]="selectedIndex"></session-list>
 			</GridLayout>
 
 

@@ -1,9 +1,16 @@
-import { Injectable } from '@angular/core';
+//angular
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject } from "rxjs/Rx";
+
+//nativescript
 import * as httpModule from 'http';
+
+//app
 import * as constantsModule from '../shared/constants';
 import * as fakeDataServiceModule from './fake-data.service';
 import { ISession } from '../shared/interfaces';
 import { SessionModel } from '../sessions/shared/session.model';
+import { FilterState } from '../sessions/shared/filter-state.model';
 
 @Injectable()
 export class SessionsService {
@@ -11,15 +18,11 @@ export class SessionsService {
     public sessionsLoaded = false;
     private _useHttpService: boolean = false;
     private _allSessions: Array<SessionModel> = [];
-    private _sessions: Array<SessionModel> = [];
+    private _filterState: FilterState;
 
-    public get allSessions() {
-        return this._allSessions;
-    }
+    public items: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
 
-    public get sessions() {
-        return this._sessions;
-    }
+    constructor(private _zone: NgZone) { }
 
     public loadSessions<T>(): Promise<T> {
         return new Promise((resolve, reject) => {
@@ -55,7 +58,6 @@ export class SessionsService {
             }
             reject('could not find session with id:' + sessionId);
         });
-
     }
 
     private loadSessionsViaHttp<T>(): Promise<T> {
@@ -76,15 +78,36 @@ export class SessionsService {
         });
     }
 
-    public filter(date: number, search: string, viewIndex: number) {
-        this._sessions = this._allSessions.filter(s => {
+    public update(filterState: FilterState) {
+        this._filterState = filterState;
+        this.publishUpdates();
+    }
+
+    private publishUpdates() {
+        let date = this._filterState.date;
+        let search = this._filterState.search;
+        let viewIndex = this._filterState.viewIndex;
+
+        var filteredSessions = this._allSessions.filter(s => {
             return s.startDt.getDate() === date
                 && s.title.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) >= 0;
         });
 
         if (viewIndex === 0) {
-            this._sessions = this._sessions.filter(i => { return i.favorite || i.isBreak; });
+            filteredSessions = filteredSessions.filter(i => { return i.favorite || i.isBreak; });
         }
+
+        // Make sure all updates are published inside NgZone so that change detection is triggered if needed
+        this._zone.run(() => {
+            // must emit a *new* value (immutability!)
+            this.items.next([...filteredSessions]);
+        });
+    }
+
+    public toggleFavorite(session: SessionModel) {
+        session.toggleFavorite();
+        this.publishUpdates();
+        return Promise.resolve(true);
     }
 }
 

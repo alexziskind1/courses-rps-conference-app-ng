@@ -5,7 +5,7 @@ import * as platformModule from 'platform';
 import * as appModule from 'application';
 import * as typesModule from 'utils/types';
 
-//import { SessionViewModel } from '../pages/session-page/session-view-model';
+
 import { IFavouriteSession, ISession } from '../shared/interfaces';
 
 
@@ -150,29 +150,29 @@ export class FavoritesService implements OnInit {
             this.updateFavourites();
         }
 
-/*
-        if (session.calendarEventId) {
+        /*
+                if (session.calendarEventId) {
+                    
+                    if (platformModule.device.os === platformModule.platformNames.android) {
+                        var deleteUri = android.content.ContentUris.withAppendedId(android.provider.CalendarContract.Events.CONTENT_URI, parseInt(session.calendarEventId));
+                        appModule.android.foregroundActivity.getApplicationContext().getContentResolver().delete(deleteUri, null, null);
+                    } else if (platformModule.device.os === platformModule.platformNames.ios) {
+                        var store = EKEventStore.new()
+                        store.requestAccessToEntityTypeCompletion(EKEntityTypeEvent, (granted: boolean, error: NSError) => {
+                            if (!granted) {
+                                return;
+                            }
             
-            if (platformModule.device.os === platformModule.platformNames.android) {
-                var deleteUri = android.content.ContentUris.withAppendedId(android.provider.CalendarContract.Events.CONTENT_URI, parseInt(session.calendarEventId));
-                appModule.android.foregroundActivity.getApplicationContext().getContentResolver().delete(deleteUri, null, null);
-            } else if (platformModule.device.os === platformModule.platformNames.ios) {
-                var store = EKEventStore.new()
-                store.requestAccessToEntityTypeCompletion(EKEntityTypeEvent, (granted: boolean, error: NSError) => {
-                    if (!granted) {
-                        return;
+                            var eventToRemove = store.eventWithIdentifier(session.calendarEventId);
+                            if (eventToRemove) {
+                                store.removeEventSpanCommitError(eventToRemove, EKSpan.EKSpanThisEvent, true);
+                                session.calendarEventId = undefined;
+                            }
+                        });
                     }
-    
-                    var eventToRemove = store.eventWithIdentifier(session.calendarEventId);
-                    if (eventToRemove) {
-                        store.removeEventSpanCommitError(eventToRemove, EKSpan.EKSpanThisEvent, true);
-                        session.calendarEventId = undefined;
-                    }
-                });
-            }
-            
-        }
-        */
+                    
+                }
+                */
     }
 
     public updateFavourites() {

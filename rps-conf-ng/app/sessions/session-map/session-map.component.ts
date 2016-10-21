@@ -1,20 +1,15 @@
 // angular
-import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef, NgZone } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd, Params } from '@angular/router';
-import { Location } from '@angular/common';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, ElementRef } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
 // nativescript
-import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-telerik-ui/sidedrawer/angular';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-telerik-ui/sidedrawer';
-import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gestures';
 import { Page } from "ui/page";
-import { Button } from 'ui/button';
-import { Label } from 'ui/label';
 import { ImageSource } from 'image-source';
-import * as imageSourceModule from 'image-source';
 
+//app
 import { IRoomInfo } from '../../shared/interfaces';
 import { SessionsService } from '../../services/sessions.service';
 import { RoomMapService } from '../../services/room-map.service';
@@ -35,8 +30,9 @@ export class SessionMapComponent implements OnInit {
   public image: Observable<ImageSource>;
 
   constructor(private _page: Page, private _sessionsService: SessionsService, private _roomMapService: RoomMapService, private route: ActivatedRoute,
-    private location: Location, private routerExtensions: RouterExtensions, private zone: NgZone) {
+    private routerExtensions: RouterExtensions) {
     this._page.actionBarHidden = true;
+    this._page.backgroundSpanUnderStatusBar = true;
   }
 
   public ngOnInit() {

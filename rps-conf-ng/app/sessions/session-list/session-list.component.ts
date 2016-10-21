@@ -14,6 +14,7 @@ import { SessionsService } from '../../services/sessions.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { ISession, IConferenceDay } from '../../shared/interfaces';
 import { SessionModel } from '../shared/session.model';
+import { FilterState } from '../shared/filter-state.model';
 import { conferenceDays, hideSearchKeyboard } from '../../shared';
 
 
@@ -21,32 +22,32 @@ import { conferenceDays, hideSearchKeyboard } from '../../shared';
     moduleId: module.id,
     selector: "session-list",
     templateUrl: "session-list.component.html",
-    //changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionListComponent implements OnInit {
 
-    private _selectedIndex: number;
     private _search = '';
+    private _selectedIndex: number = 0;
     private _selectedViewIndex: number;
+
+    public dayHeader: string = '';
+    @ViewChild('searchBar') public searchBar: ElementRef;
 
     public get selectedViewIndex() {
         return this._selectedViewIndex;
     }
-    @Input() public set selectedViewIndex(val: number) {
-        this._selectedViewIndex = val;
+    @Input() public set selectedViewIndex(value: number) {
+        this._selectedViewIndex = value;
         if (this._selectedViewIndex < 2) {
-            this.filter();
+            this.refresh();
         }
+        this.hideSearchKeyboard();
     }
-    public dayHeader: string = '';
-    public sessions: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
-
-    @ViewChild('searchBar') public searchBar: ElementRef;
 
     public get selectedIndex(): number {
         return this._selectedIndex;
     }
-    public set selectedIndex(value: number) {
+    @Input() public set selectedIndex(value: number) {
         if (this._selectedIndex !== value) {
             this._selectedIndex = value;
             this.dayHeader = conferenceDays[value].desc;
@@ -54,7 +55,7 @@ export class SessionListComponent implements OnInit {
             if (this.search !== '') {
                 this.search = '';
             } else {
-                this.filter();
+                this.refresh();
             }
         }
     }
@@ -65,41 +66,34 @@ export class SessionListComponent implements OnInit {
     public set search(value: string) {
         if (this._search !== value) {
             this._search = value;
-            this.filter();
+            this.refresh();
         }
     }
 
     constructor(private _sessionsService: SessionsService,
         private _zone: NgZone,
         private _routerExtensions: RouterExtensions) {
-        this.selectedIndex = 0;
-        //this.selectedViewIndex = 1;
+        this._selectedIndex = 0;
     }
-
 
     public ngOnInit() {
         var p = this._sessionsService.loadSessions<Array<ISession>>()
             .then((newSessions: Array<ISession>) => {
-                this.filter();
+                this.refresh();
             });
     }
 
-    private filter() {
-        var filtered = this._sessionsService.filter(conferenceDays[this.selectedIndex].date.getDate(), this.search, this.selectedViewIndex);
-        this.publishUpdates();
-    }
-
-    private publishUpdates() {
-        // Make sure all updates are published inside NgZone so that change detection is triggered if needed
-        this._zone.run(() => {
-            // must emit a *new* value (immutability!)
-            this.sessions.next([...this._sessionsService.sessions]);
-        });
+    private refresh() {
+        let filterState: FilterState = new FilterState(
+            conferenceDays[this.selectedIndex].date.getDate(),
+            this.search,
+            this.selectedViewIndex);
+        this._sessionsService.update(filterState);
     }
 
     public selectSession(args: ItemEventData) {
         var session = <SessionModel>args.view.bindingContext;
-        //shideSearchKeyboard(this.searchBar.nativeElement);
+        this.hideSearchKeyboard();
         if (!session.isBreak) {
             let link = ['/session-details', session.id];
             this._routerExtensions.navigate(link);
@@ -107,8 +101,14 @@ export class SessionListComponent implements OnInit {
     }
 
     public toggleFavorite(session: SessionModel) {
-        session.toggleFavorite();
+        this._sessionsService.toggleFavorite(session)
+            .then(() => {
+                console.log('done toggling favorite');
+            });
     }
 
+    private hideSearchKeyboard() {
+        hideSearchKeyboard(this.searchBar.nativeElement);
+    }
 
 }

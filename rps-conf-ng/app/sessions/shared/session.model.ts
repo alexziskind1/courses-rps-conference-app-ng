@@ -89,7 +89,7 @@ export class SessionModel implements ISession {
     }
 
 
-    constructor(source: ISession) {
+    constructor(public source: ISession) {
         if (source) {
             this._session = source;
             this._startDt = this.fixDate(new Date(source.start));

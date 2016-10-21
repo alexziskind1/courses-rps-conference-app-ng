@@ -1,7 +1,5 @@
-
-
 // angular
-import { Component, ViewChild, ChangeDetectorRef, Inject, Output, EventEmitter, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, Inject, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -14,6 +12,7 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 
+//app
 import { SessionsService } from '../../services/sessions.service';
 import { SessionModel } from '../shared/session.model';
 
@@ -28,37 +27,25 @@ export class SessionDetailsComponent implements OnInit {
 
   public session: SessionModel;
 
-  @Output() favorited = new EventEmitter();
-
   @ViewChild('btnDesc') btnDesc: ElementRef;
   @ViewChild('lblDesc') lblDesc: ElementRef;
-
 
   constructor(private _page: Page, private _sessionsService: SessionsService, private route: ActivatedRoute,
     private location: Location, private routerExtensions: RouterExtensions) {
     this._page.actionBarHidden = true;
-
-
-    this.favorited.subscribe((f) => {
-      console.log('subscription hit');
-      console.dir(f);
-    });
+    this._page.backgroundSpanUnderStatusBar = true;
   }
 
   public ngOnInit() {
     this.route.params.forEach((params: Params) => {
       let id: string = params['id'];
 
-      console.log('details oninit id:' + id);
-
       this._sessionsService.getSessionById(id)
         .then((session: SessionModel) => {
           this.session = session;
         });
-
     });
   }
-
 
   public backSwipe(args: SwipeGestureEventData) {
     if (args.direction === SwipeDirection.right) {
@@ -71,14 +58,15 @@ export class SessionDetailsComponent implements OnInit {
   }
 
   public showMapTap() {
-    //console.log('select session ' + session.title);
     let link = ['/session-map', this.session.id];
     this.routerExtensions.navigate(link);
   }
 
   public toggleFavorite() {
-    this.session.toggleFavorite();
-    this.favorited.next(this.session.favorite);
+    this._sessionsService.toggleFavorite(this.session)
+      .then(() => {
+        console.log('done toggling fav from details');
+      });
   }
 
   public toogleDescription() {
