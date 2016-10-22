@@ -9,8 +9,11 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-teler
 import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
 import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gestures';
 import { Page } from "ui/page";
+import { GridLayout } from 'ui/layouts/grid-layout';
+import { AbsoluteLayout } from 'ui/layouts/absolute-layout';
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
+import { View } from 'ui/core/view';
 
 //app
 import { SessionsService } from '../../services/sessions.service';
@@ -62,10 +65,20 @@ export class SessionDetailsComponent implements OnInit {
     this.routerExtensions.navigate(link);
   }
 
-  public toggleFavorite() {
+  public toggleFavorite(args: GestureEventData) {
+    console.log('toggleFavorite');
+    let grid = <GridLayout>args.view;
+    let abs = <AbsoluteLayout>grid.getChildAt(0);
+    let lbl = <Label>abs.getChildAt(0);
+
     this._sessionsService.toggleFavorite(this.session)
       .then(() => {
         console.log('done toggling fav from details');
+        if (this.session.favorite) {
+          this.animateStar(lbl);
+        } else {
+          this.animateUnfavorite(lbl);
+        }
       });
   }
 
@@ -81,6 +94,31 @@ export class SessionDetailsComponent implements OnInit {
       lbl.text = this.session.descriptionShort;
       //scroll.scrollToVerticalOffset(0, false);
     }
+  }
+
+  private animateStar(lbl: Label) {
+    console.log('animateStar');
+    var x = 0;
+    var y = 0;
+    var index = 1;
+
+    var cancel = setInterval(() => {
+
+      this.setBackgroundPosition(lbl, x + ' ' + y);
+      x = x - 50;
+      index++;
+      if (index == 30) {
+        clearInterval(cancel);
+      }
+    }, 20);
+  }
+
+  private animateUnfavorite(lbl: Label) {
+    this.setBackgroundPosition(lbl, '0 0');
+  }
+
+  private setBackgroundPosition(view: View, posish: string) {
+    view.style.backgroundPosition = posish;
   }
 
 }
