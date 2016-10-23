@@ -61,7 +61,9 @@ SegmentedBar {
 
 .page-header {
     background-image: url('res://background');
+    background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
 }
 
 .page-title {
