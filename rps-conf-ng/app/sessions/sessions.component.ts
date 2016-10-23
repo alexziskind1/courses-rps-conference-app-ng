@@ -74,7 +74,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   }
 
   public get sideDrawerTransition(): DrawerTransitionBase {
-    return this._drawerService.sideDrawerTransition;
+    return new ScaleUpTransition();
   }
 
   public toggle() {
