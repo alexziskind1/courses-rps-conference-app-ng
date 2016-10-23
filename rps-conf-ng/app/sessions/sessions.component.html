@@ -26,7 +26,7 @@
 
 			<!-- Header -->
 			<GridLayout>
-				<StackLayout #background class="page-header">
+				<StackLayout #background class="page-header" scaleX="1.4" scaleY="1.4" (loaded)="startBackgroundAnimation(background)">
 				</StackLayout>
 
 				<StackLayout>

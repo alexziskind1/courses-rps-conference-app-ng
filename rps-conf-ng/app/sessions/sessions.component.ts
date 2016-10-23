@@ -101,6 +101,13 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     //hideSearchKeyboard(this.searchBar.nativeElement);
   }
 
+  public startBackgroundAnimation(background) {
+    background.animate({
+      scale: { x: 1.0, y: 1.0 },
+      duration: 10000
+    });
+  }
+
 
 
 
