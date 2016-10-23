@@ -1,5 +1,12 @@
-.session-item {
+@import '../../animate.css'; 
+
+.listView {
     background-color: #ffffff;
+}
+
+.session-item {
+    animation-name: fadeInLeft;
+    animation-duration: 0.5s;
 }
 
 .favourite-wrap-ng {
@@ -28,4 +35,9 @@
     background-size: cover;
     height: 50;
     width: 50;
+}
+
+@keyframes myitem {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }

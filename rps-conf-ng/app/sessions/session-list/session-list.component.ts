@@ -118,4 +118,4 @@ export class SessionListComponent implements OnInit {
 
 }
 
-var a = 0;
+var a = 1;
