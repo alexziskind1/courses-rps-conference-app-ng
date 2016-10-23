@@ -25,23 +25,27 @@
 
 
 			<!-- Header -->
-			<StackLayout class="page-header">
-				<GridLayout class="action-bar darker">
-					<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
-						<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
-					</GridLayout>
-					<Label [text]="actionBarTitle" class="action-bar-title"></Label>
-				</GridLayout>
-
-				<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
-					<GridLayout class="darker">
-						<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
-					</GridLayout>
-
-					<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+			<GridLayout>
+				<StackLayout #background class="page-header">
 				</StackLayout>
-			</StackLayout>
 
+				<StackLayout>
+					<GridLayout class="action-bar darker">
+						<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
+							<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
+						</GridLayout>
+						<Label [text]="actionBarTitle" class="action-bar-title"></Label>
+					</GridLayout>
+
+					<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
+						<GridLayout class="darker">
+							<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+						</GridLayout>
+
+						<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+					</StackLayout>
+				</StackLayout>
+			</GridLayout>
 
 
 			<!-- Sessions Views -->
