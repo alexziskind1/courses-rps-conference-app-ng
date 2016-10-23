@@ -22,6 +22,7 @@ import { conferenceDays, hideSearchKeyboard } from '../../shared';
     moduleId: module.id,
     selector: "session-list",
     templateUrl: "session-list.component.html",
+    styleUrls: ['session-list.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionListComponent implements OnInit {
@@ -77,6 +78,10 @@ export class SessionListComponent implements OnInit {
     }
 
     public ngOnInit() {
+
+    }
+
+    public load() {
         var p = this._sessionsService.loadSessions<Array<ISession>>()
             .then((newSessions: Array<ISession>) => {
                 this.refresh();
@@ -91,8 +96,8 @@ export class SessionListComponent implements OnInit {
         this._sessionsService.update(filterState);
     }
 
-    public selectSession(args: ItemEventData) {
-        var session = <SessionModel>args.view.bindingContext;
+    public selectSession(args: ItemEventData, session: SessionModel) {
+        //var session = <SessionModel>args.view.bindingContext;
         this.hideSearchKeyboard();
         if (!session.isBreak) {
             let link = ['/session-details', session.id];
@@ -112,3 +117,5 @@ export class SessionListComponent implements OnInit {
     }
 
 }
+
+var a = 0;

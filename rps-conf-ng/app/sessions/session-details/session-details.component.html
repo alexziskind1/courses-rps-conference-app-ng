@@ -25,9 +25,12 @@
 				</GridLayout>
 
 
-				<GridLayout row="1" [visibility]="session.isBreak ? 'collapsed' : 'visible' " (tap)="toggleFavorite()" columns="auto" class="favourite-wrap"
-					horizontalAlignment="left">
-					<Image id="imgFav" [src]="session.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' " stretch="none" class="icon-image"></Image>
+				<GridLayout row="1" [visibility]="session.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap-ng" (tap)="toggleFavorite(item, $event, i)"
+					columns="auto" rows="auto">
+					<AbsoluteLayout class="star-img-wrapper">
+						<Label *ngIf="session.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
+						<Label *ngIf="!session.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
+					</AbsoluteLayout>
 				</GridLayout>
 
 				<StackLayout margin="16 16 16 0" row="1" col="1">
