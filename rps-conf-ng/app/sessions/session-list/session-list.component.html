@@ -2,21 +2,36 @@
 <SearchBar #searchBar [(ngModel)]="search" hint="Search" class="search" textFieldBackgroundColor="white"></SearchBar>
 
 <!-- List -->
-<ListView [items]="_sessionsService.items | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
-	<template let-item="item" let-i="index">
-		<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
+<StackLayout row="1" class="listView" (loaded)="load()">
+	<ScrollView>
+		<StackLayout>
+			<StackLayout *ngFor="let item of _sessionsService.items.value; let i = index;" class="session-item">
+				<GridLayout columns="auto, *, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
-			<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
-				rows="auto">
-				<Image id="imgFav" stretch="none" class="icon-image" [src]="item.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' "></Image>
-			</GridLayout>
+					<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item, $event, i)"
+						columns="auto" rows="auto">
+						<AbsoluteLayout class="star-img-wrapper">
 
-			<StackLayout col="1">
-				<Label [text]="item.range" class="info-orange bold"></Label>
-				<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
-				<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+							<Label #starLbl class="star-img-unfav" [visibility]="isToggling ? 'visible' : 'collapsed' "></Label>
+
+							<Label *ngIf="item.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
+							<Label *ngIf="!item.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
+						</AbsoluteLayout>
+
+					</GridLayout>
+
+					<StackLayout col="1" (tap)="selectSession(item, $event)">
+						<Label [text]="item.range" class="info-orange bold"></Label>
+						<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
+						<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+					</StackLayout>
+
+					<StackLayout col="2">
+						<Button (tap)="reportRow(item, i)" text="tap"></Button>
+					</StackLayout>
+
+				</GridLayout>
 			</StackLayout>
-
-		</GridLayout>
-	</template>
-</ListView>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>
