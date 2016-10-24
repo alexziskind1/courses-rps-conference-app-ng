@@ -26,7 +26,6 @@ SegmentedBar {
 
 .slide-out-btn {
     color: #e4ba4e;
-    background-color: #053140;
     font-size: 19;
     height: 44;
     text-align: left;
@@ -36,7 +35,6 @@ SegmentedBar {
 
 .slide-out-btn-selected {
     color: white;
-    background-color: #053140;
     font-size: 19;
     height: 44;
     text-align: left;
