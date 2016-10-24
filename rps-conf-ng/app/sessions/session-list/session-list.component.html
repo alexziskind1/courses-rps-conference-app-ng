@@ -8,13 +8,7 @@
 			<StackLayout *ngFor="let item of _sessionsService.items.value; let i = index;" class="session-item">
 				<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
-					<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap-ng" (tap)="toggleFavorite(item, $event, i)"
-						columns="auto" rows="auto">
-						<AbsoluteLayout class="star-img-wrapper">
-							<Label *ngIf="item.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
-							<Label *ngIf="!item.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
-						</AbsoluteLayout>
-					</GridLayout>
+					<fav-star *ngIf="!item.isBreak" [item]="item"></fav-star>
 
 					<StackLayout col="1" (tap)="selectSession($event, item)">
 						<Label [text]="item.range" class="info-orange bold"></Label>

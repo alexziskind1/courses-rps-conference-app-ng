@@ -6,30 +6,3 @@
 
 }
 
-.favourite-wrap-ng {
-    horizontal-align: left;
-    vertical-align: top;
-    padding: 4;
-    margin-right: 6;
-}
-
-.star-img-wrapper {
-    height: 50;
-    width: 50;
-
-}
-
-
-.star-img-fav {
-    background-image: url('~/images/star_fav.png');
-    background-size: cover;
-    height: 50;
-    width: 50;
-}
-
-.star-img-unfav {
-    background-image: url('~/images/star_unfav.png');
-    background-size: cover;
-    height: 50;
-    width: 50;
-}

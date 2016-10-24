@@ -105,13 +105,6 @@ export class SessionListComponent implements OnInit {
         }
     }
 
-    public toggleFavorite(session: SessionModel) {
-        this._sessionsService.toggleFavorite(session)
-            .then(() => {
-                console.log('done toggling favorite');
-            });
-    }
-
     private hideSearchKeyboard() {
         hideSearchKeyboard(this.searchBar.nativeElement);
     }
