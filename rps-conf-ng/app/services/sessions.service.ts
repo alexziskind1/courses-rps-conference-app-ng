@@ -100,6 +100,10 @@ export class SessionsService {
         // Make sure all updates are published inside NgZone so that change detection is triggered if needed
         this._zone.run(() => {
             // must emit a *new* value (immutability!)
+            /*
+            for (var i = 0; i < filteredSessions.length; i++) {
+                this.items.next([filteredSessions[i]]);
+            }*/
             this.items.next([...filteredSessions]);
         });
     }

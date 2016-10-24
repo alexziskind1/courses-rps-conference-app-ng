@@ -6,25 +6,31 @@
 	<ScrollView>
 		<StackLayout>
 			<StackLayout *ngFor="let item of _sessionsService.items.value; let i = index;" class="session-item">
-				<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
+				<GridLayout columns="auto, *, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
-					<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap-ng" (tap)="toggleFavorite(item, $event, i)"
+					<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item, $event, i)"
 						columns="auto" rows="auto">
 						<AbsoluteLayout class="star-img-wrapper">
+
+							<Label #starLbl class="star-img-unfav" [visibility]="isToggling ? 'visible' : 'collapsed' "></Label>
+
 							<Label *ngIf="item.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
 							<Label *ngIf="!item.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
 						</AbsoluteLayout>
+
 					</GridLayout>
 
-					<StackLayout col="1" (tap)="selectSession($event, item)">
+					<StackLayout col="1" (tap)="selectSession(item, $event)">
 						<Label [text]="item.range" class="info-orange bold"></Label>
 						<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
 						<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
 					</StackLayout>
 
+					<StackLayout col="2">
+						<Button (tap)="reportRow(item, i)" text="tap"></Button>
+					</StackLayout>
+
 				</GridLayout>
-				<!-- Line -->
-				<StackLayout class="horizontal-line" margin="0 0 0 10"></StackLayout>
 			</StackLayout>
 		</StackLayout>
 	</ScrollView>

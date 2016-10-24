@@ -190,3 +190,153 @@ SegmentedBar {
 .bold {
     font-weight: bold;
 }
+
+.session-item {
+    height: 100;
+}
+
+/*-----------*/
+.star-img-wrapper {
+    height: 50;
+    width: 50;
+    border-width: 1;
+    border-color: blue;
+}
+
+.star-bakf {
+    animation-name: bakf;
+    animation-duration: 1s;
+}
+
+.star-img-fav {
+    background-image: url('~/images/star_sprite.png');
+    background-size: cover;
+    height: 50;
+    width: 50;
+    background-position: -1400 0;
+}
+.star-img-unfav {
+    background-image: url('~/images/star_sprite.png');
+    background-size: cover;
+    height: 50;
+    width: 50;
+    background-position: 0 0;
+}
+
+.star-img {
+    background-image: url('~/images/star_sprite.png');
+    background-size: cover;
+    height: 50;
+    width: 50;
+}
+.star-img-1 {
+    background-position: 0 0;
+}
+.star-img-2 {
+    background-position: -50 0;
+}
+.star-img-3 {
+    background-position: -100 0;
+}
+.star-img-4 {
+    background-position: -150 0;
+}
+.star-img-5 {
+    background-position: -200 0;
+}
+.star-img-6 {
+    background-position: -250 0;
+}
+.star-img-7 {
+    background-position: -300 0;
+}
+.star-img-8 {
+    background-position: -350 0;
+}
+.star-img-9 {
+    background-position: -400 0;
+}
+.star-img-10 {
+    background-position: -450 0;
+}
+.star-img-11 {
+    background-position: -500 0;
+}
+.star-img-12 {
+    background-position: -550 0;
+}
+.star-img-13 {
+    background-position: -600 0;
+}
+.star-img-14 {
+    background-position: -650 0;
+}
+.star-img-15 {
+    background-position: -700 0;
+}
+.star-img-16 {
+    background-position: -750 0;
+}
+.star-img-17 {
+    background-position: -800 0;
+}
+.star-img-18 {
+    background-position: -850 0;
+}
+.star-img-19 {
+    background-position: -900 0;
+}
+.star-img-20 {
+    background-position: -950 0;
+}
+.star-img-21 {
+    background-position: -1000 0;
+}
+.star-img-22 {
+    background-position: -1050 0;
+}
+.star-img-23 {
+    background-position: -1100 0;
+}
+.star-img-24 {
+    background-position: -1150 0;
+}
+.star-img-25 {
+    background-position: -1200 0;
+}
+.star-img-26 {
+    background-position: -1250 0;
+}
+.star-img-27 {
+    background-position: -1300 0;
+}
+.star-img-28 {
+    background-position: -1350 0;
+}
+.star-img-29 {
+    background-position: -1400 0;
+}
+
+
+.unfav {
+    animation-name: changeme;
+    animation-duration: 3s;
+}
+
+
+@keyframes changeme {
+    0% { transform: scale(1, 1); }
+    75% { transform: scale(1.5, 1.5); }
+    100% { transform: scale(1, 1); }
+}
+
+@keyframes bakf {
+    0% { opacity: 1; background-image: url('~/images/star_sprite.png'); }
+    100% { opacity: 1; background-image: url('~/images/star_sprite.png'); }
+}
+
+
+.star-icon {
+        height: 50;
+    width: 50;
+}
