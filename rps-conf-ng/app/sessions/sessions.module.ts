@@ -10,6 +10,7 @@ import { SessionDetailsComponent } from "./session-details/session-details.compo
 import { SessionMapComponent } from "./session-map/session-map.component";
 import { SessionListComponent } from "./session-list/session-list.component";
 import { SponsorsListComponent } from "./sponsors-list/sponsors-list.component";
+import { SessionCardComponent } from "./session-card/session-card.component";
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { SponsorsListComponent } from "./sponsors-list/sponsors-list.component";
     SessionMapComponent,
     SessionListComponent,
     SponsorsListComponent,
+    SessionCardComponent,
     SIDEDRAWER_DIRECTIVES
   ]
 })

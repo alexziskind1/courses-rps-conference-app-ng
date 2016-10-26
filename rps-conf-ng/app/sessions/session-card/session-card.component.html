@@ -1,0 +1,52 @@
+<StackLayout horizontalAlignment="center" verticalAlignment="center" class="session-card">
+
+	<StackLayout class="card modal">
+		<StackLayout class="card-inner">
+
+			<StackLayout (swipe)="cardSwipe($event)">
+				<!-- HEADER -->
+				<GridLayout rows="auto, auto" class="card-header">
+
+					<StackLayout margin="16 16 16 0" row="1" col="1">
+						<Label [text]="session.title" textWrap="true" class="session-page-title"></Label>
+						<Label [text]="session.range" textWrap="true" class="session-page-subtitle"></Label>
+						<Label [text]="session.room" textWrap="true" class="session-page-subtitle"></Label>
+					</StackLayout>
+
+				</GridLayout>
+
+
+				<!-- Content -->
+				<ScrollView id="scroll">
+					<StackLayout class="content">
+
+						<!-- Speakers -->
+						<Label text="SPEAKERS" class="section-header"></Label>
+
+						<ListView id="sepakers-list" [items]="session.speakers" height="{{ session.speakers.length * 72 + 46 }}" selectedBackgroundColor="#fac950"
+							separatorColor="#FFFFFF">
+							<template let-item="item">
+								<GridLayout columns="56, *" class="speakers-row card-speaker">
+									<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
+
+									<StackLayout col="1">
+										<StackLayout orientation="horizontal">
+											<Label [text]="item.name" class="info bold"></Label>
+										</StackLayout>
+
+										<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
+									</StackLayout>
+								</GridLayout>
+							</template>
+						</ListView>
+					</StackLayout>
+				</ScrollView>
+
+				<StackLayout>
+					<Button text="Close" (tap)="cardClose()" class="btn-close"></Button>
+				</StackLayout>
+
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

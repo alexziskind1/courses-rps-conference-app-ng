@@ -21,6 +21,7 @@ import * as frameModule from 'ui/frame';
 import { ISession, IConferenceDay } from '../shared/interfaces';
 import { DrawerService } from '../services/drawer.service';
 import { conferenceDays, hideSearchKeyboard } from '../shared';
+import { SessionModel } from './shared/session.model';
 
 @Component({
   moduleId: module.id,
@@ -37,6 +38,8 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   public actionBarTitle: string = 'All sessions';
   public dayHeader: string = '';
 
+  public selectedSession: SessionModel = null;
+
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
 
 
@@ -52,6 +55,10 @@ export class SessionsComponent implements OnInit, AfterViewInit {
       this._selectedIndex = value;
       this.dayHeader = conferenceDays[value].desc;
     }
+  }
+
+  public get sessionCardVisible(): boolean {
+    return this.selectedSession != null;
   }
 
 
@@ -101,7 +108,13 @@ export class SessionsComponent implements OnInit, AfterViewInit {
     //hideSearchKeyboard(this.searchBar.nativeElement);
   }
 
+  public sessionSelected(session: SessionModel) {
+    this.selectedSession = session;
+  }
 
+  public hideSessionCard() {
+    this.selectedSession = null;
+  }
 
 
   public goToAcknowledgementPage() {

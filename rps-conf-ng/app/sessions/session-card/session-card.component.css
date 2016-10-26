@@ -1,0 +1,84 @@
+.session-card-wrapper {
+
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 6;
+    width: 270;
+}
+
+.card-header {
+    background-color:#053140;
+    padding: 20;
+}
+
+
+.modal {
+    animation: slideInBottom 0.8s linear, fadeIn 0.3s ease-in;
+}
+
+.card-speaker {
+    opacity: 0;
+    transform: translate(200, 0);
+    animation: slideInRight 0.8s ease-in 0.4s, fadeIn 0.9s ease-in 0.4s;
+}
+
+
+@keyframes slideInBottom {
+    0% { 
+        transform: translate(0, 400); 
+        animation-timing-function: ease-out;
+    }
+    60% { 
+        transform: translate(0, -50);
+        animation-timing-function: ease-in;
+    }
+    80% { 
+        transform: translate(0, 10); 
+        animation-timing-function: ease-out;
+    }
+    100% { 
+        transform: translate(0, 0);
+        animation-timing-function: ease-in;
+    }
+}
+
+@keyframes slideInRight {
+    0% { 
+        transform: translate(200, 0); 
+        animation-timing-function: ease-out;
+    }
+    60% { 
+        transform: translate(-20, 0);
+        animation-timing-function: ease-in;
+    }
+    80% { 
+        transform: translate(10, 0); 
+        animation-timing-function: ease-out;
+    }
+    100% { 
+        transform: translate(0, 0);
+        animation-timing-function: ease-in;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomOut {
+    0% { 
+        transform: scale(2, 2); 
+        animation-timing-function: ease-out;
+    }
+    75% { 
+        transform: scale(0.8, 0.8);
+        animation-timing-function: ease-in;
+    }
+    100% { 
+        transform: scale(1, 1);
+        animation-timing-function: ease-in;
+    }
+}

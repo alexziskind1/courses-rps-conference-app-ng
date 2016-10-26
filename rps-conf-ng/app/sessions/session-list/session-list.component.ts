@@ -1,5 +1,5 @@
 //angular
-import { Component, Input, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 
@@ -7,6 +7,7 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { NativeScriptRouterModule, RouterExtensions } from 'nativescript-angular/router';
 import { ItemEventData } from 'ui/list-view';
+import { GestureEventData, GestureEventDataWithState } from 'ui/gestures';
 
 
 //app
@@ -32,6 +33,9 @@ export class SessionListComponent implements OnInit {
     private _selectedViewIndex: number;
 
     public dayHeader: string = '';
+
+    @Output() notifySessionSelected: EventEmitter<SessionModel> = new EventEmitter<SessionModel>();
+
     @ViewChild('searchBar') public searchBar: ElementRef;
 
     public get selectedViewIndex() {
@@ -60,6 +64,8 @@ export class SessionListComponent implements OnInit {
             }
         }
     }
+
+    @Input() public sessionCardVisible: boolean;
 
     public get search(): string {
         return this._search;
@@ -98,6 +104,9 @@ export class SessionListComponent implements OnInit {
 
     public selectSession(args: ItemEventData, session: SessionModel) {
         //var session = <SessionModel>args.view.bindingContext;
+        if (this.sessionCardVisible)
+            return;
+
         this.hideSearchKeyboard();
         if (!session.isBreak) {
             let link = ['/session-details', session.id];
@@ -105,7 +114,15 @@ export class SessionListComponent implements OnInit {
         }
     }
 
+    public showSessionCard(session: SessionModel, event: GestureEventData) {
+        this.notifySessionSelected.emit(session);
+    }
+
+
     public toggleFavorite(session: SessionModel) {
+        if (this.sessionCardVisible)
+            return;
+
         this._sessionsService.toggleFavorite(session)
             .then(() => {
                 console.log('done toggling favorite');
