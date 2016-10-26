@@ -1,6 +1,6 @@
-<StackLayout horizontalAlignment="center" verticalAlignment="center" class="session-card">
+<GridLayout #sessionCard horizontalAlignment="center" verticalAlignment="center" class="session-card" (loaded)="cardLoaded(sessionCard)">
 
-	<StackLayout class="card modal">
+	<StackLayout class="card ">
 		<StackLayout class="card-inner">
 
 			<StackLayout (swipe)="cardSwipe($event)">
@@ -49,4 +49,4 @@
 			</StackLayout>
 		</StackLayout>
 	</StackLayout>
-</StackLayout>
+</GridLayout>

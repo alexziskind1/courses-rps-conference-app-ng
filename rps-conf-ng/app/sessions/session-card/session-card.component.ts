@@ -11,11 +11,14 @@ import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gest
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
+import { GridLayout } from 'ui/layouts/grid-layout';
 
 //app
 import { SessionsService } from '../../services/sessions.service';
 import { SessionModel } from '../shared/session.model';
 
+
+declare var CGSizeMake;
 
 @Component({
     moduleId: module.id,
@@ -42,6 +45,16 @@ export class SessionCardComponent implements OnInit {
 
     public cardClose() {
         this.notifyCardClosed.emit();
+    }
+
+    public cardLoaded(sessionCard: GridLayout) {
+        let view = sessionCard.ios;
+        view.layer.masksToBounds = false;
+        view.layer.shadowRadius = 10;
+        view.layer.shadowOpacity = 0.5;
+
+        sessionCard.className = sessionCard.className.replace('session-card', '');
+        sessionCard.className = sessionCard.className.trim() + ' session-card';
     }
 
 }

@@ -66,8 +66,10 @@
 			</GridLayout>
 
 
-			<GridLayout *ngIf="selectedSession" class="full-screen darker" (tap)="hideSessionCard()">
-				<session-card [session]="selectedSession" (notifyCardClosed)="hideSessionCard($event)"> </session-card>
+			<GridLayout *ngIf="selectedSession" class="full-screen" (tap)="hideSessionCard()">
+				<GridLayout #sessionCardWrapper (loaded)="selectedSessionCardLoaded(sessionCardWrapper)">
+					<session-card [session]="selectedSession" (notifyCardClosed)="hideSessionCard($event)"> </session-card>
+				</GridLayout>
 			</GridLayout>
 
 		</AbsoluteLayout>

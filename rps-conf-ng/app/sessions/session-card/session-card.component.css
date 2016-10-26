@@ -1,5 +1,8 @@
-.session-card-wrapper {
+@import '../../animate.css';
 
+.session-card {
+    animation-name: bounceIn;
+    animation-duration: 0.7s;
 }
 
 .card {
@@ -19,9 +22,11 @@
 }
 
 .card-speaker {
-    opacity: 0;
+    /*opacity: 0;
     transform: translate(200, 0);
-    animation: slideInRight 0.8s ease-in 0.4s, fadeIn 0.9s ease-in 0.4s;
+    animation: bounceIn 0.8s ease-in 0.4s, fadeIn 0.9s ease-in 0.4s;*/
+    animation-name: bounceIn;
+    animation-duration: 0.9s;
 }
 
 

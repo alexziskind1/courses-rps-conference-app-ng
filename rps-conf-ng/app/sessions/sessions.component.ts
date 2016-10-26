@@ -13,6 +13,7 @@ import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 import { StackLayout } from 'ui/layouts/stack-layout';
+import { GridLayout } from 'ui/layouts/grid-layout';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
@@ -22,6 +23,9 @@ import { ISession, IConferenceDay } from '../shared/interfaces';
 import { DrawerService } from '../services/drawer.service';
 import { conferenceDays, hideSearchKeyboard } from '../shared';
 import { SessionModel } from './shared/session.model';
+
+declare var UIView, UIBlurEffect, UIVisualEffectView, UIBlurEffectStyleLight, UIViewAutoresizingFlexibleWidth, UIViewAutoresizingFlexibleHeight;
+var _blurEffectView = null;
 
 @Component({
   moduleId: module.id,
@@ -41,6 +45,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   public selectedSession: SessionModel = null;
 
   @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
+  @ViewChild('sessionCardWrapper') public sessionCardWrapper: ElementRef;
 
 
   public get confDayOptions(): Array<IConferenceDay> {
@@ -110,11 +115,40 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
   public sessionSelected(session: SessionModel) {
     this.selectedSession = session;
+
   }
 
   public hideSessionCard() {
     this.selectedSession = null;
   }
+
+  public selectedSessionCardLoaded(sessionCardWrapper) {
+    this.blurAnimate(sessionCardWrapper);
+  }
+
+
+  private blurAnimate(sessionPopupGrid) {
+    let view = sessionPopupGrid.ios;
+    if (_blurEffectView != null) {
+      console.log('blurView exists');
+      _blurEffectView.removeFromSuperview();
+    }
+
+    _blurEffectView = UIVisualEffectView.alloc().init();
+    _blurEffectView.frame = view.bounds;
+    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    view.insertSubviewAtIndex(_blurEffectView, 0);
+
+    let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleLight);
+
+    UIView.animateWithDurationAnimations(0.5, () => {
+      _blurEffectView.effect = blurEffect;
+    });
+  }
+
+
+  //--------------------------------------------------
 
 
   public goToAcknowledgementPage() {

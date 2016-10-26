@@ -115,6 +115,9 @@ export class SessionListComponent implements OnInit {
     }
 
     public showSessionCard(session: SessionModel, event: GestureEventData) {
+        if (session.isBreak)
+            return;
+
         this.notifySessionSelected.emit(session);
     }
 
