@@ -1,4 +1,4 @@
-<RadSideDrawer #drawer [transition]="sideDrawerTransition" selectionBehavior="None">
+<RadSideDrawer #drawer [transition]="sideDrawerTransition" (drawerClosing)="drawerClosing($event)" selectionBehavior="None">
 	<StackLayout tkDrawerContent>
 
 		<GridLayout rows="*, auto">
@@ -32,7 +32,14 @@
 				<StackLayout>
 					<GridLayout class="action-bar darker">
 						<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
-							<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
+
+							<StackLayout #myMenuBtn class="menu-button">
+								<Label #myMenuBtnBar1 class="bar bar1"></Label>
+								<Label #myMenuBtnBar2 class="bar bar2"></Label>
+								<Label #myMenuBtnBar3 class="bar bar3"></Label>
+							</StackLayout>
+
+
 						</GridLayout>
 						<Label [text]="actionBarTitle" class="action-bar-title"></Label>
 					</GridLayout>
@@ -50,7 +57,7 @@
 
 			<!-- Sessions Views -->
 			<GridLayout rows="auto, *" row="1">
-				<session-list [selectedViewIndex]="selectedViewIndex" [selectedIndex]="selectedIndex"></session-list>
+				<session-list [selectedViewIndex]="selectedViewIndex" [selectedIndex]="selectedIndex" (notifySessionSelected)="sessionSelected($event)"></session-list>
 			</GridLayout>
 
 

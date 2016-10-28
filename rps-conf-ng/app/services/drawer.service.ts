@@ -1,23 +1,26 @@
 import { Injectable, ViewChild } from '@angular/core';
 
 import { SideDrawerType } from 'nativescript-telerik-ui/sidedrawer/angular';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-telerik-ui/sidedrawer';
+import { DrawerTransitionBase, ScaleUpTransition } from 'nativescript-telerik-ui/sidedrawer';
 
 
 @Injectable()
 export class DrawerService {
     private _drawerIsOpen: boolean = false;
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+    private _sideDrawerTransition: DrawerTransitionBase = new ScaleUpTransition();
     private _drawer: SideDrawerType;
 
     public get IsDrawerOpen() {
-        return this._drawerIsOpen;
+        //return this._drawerIsOpen;
+        return this._drawer.getIsOpen();
     }
 
-    public set IsDrawerOpen(val: boolean) {
-        this._drawerIsOpen = val;
-    }
+    /*
+        public set IsDrawerOpen(val: boolean) {
+            //this._drawerIsOpen = val;
+        }
+        */
 
     public initDrawer(drawer) {
         this._drawer = drawer;
@@ -42,6 +45,8 @@ export class DrawerService {
 
     public showDrawer() {
         this._drawer.showDrawer();
+
+        this._drawer
     }
 
 }

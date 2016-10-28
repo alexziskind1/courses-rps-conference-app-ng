@@ -1,5 +1,5 @@
 //angular
-import { Component, Input, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 
@@ -33,6 +33,7 @@ export class SessionListComponent implements OnInit {
 
     public dayHeader: string = '';
     @ViewChild('searchBar') public searchBar: ElementRef;
+    @Output() notifySessionSelected: EventEmitter<SessionModel> = new EventEmitter<SessionModel>();
 
     public get selectedViewIndex() {
         return this._selectedViewIndex;
@@ -103,6 +104,7 @@ export class SessionListComponent implements OnInit {
             let link = ['/session-details', session.id];
             this._routerExtensions.navigate(link);
         }
+        this.notifySessionSelected.emit(session);
     }
 
     public toggleFavorite(session: SessionModel) {
