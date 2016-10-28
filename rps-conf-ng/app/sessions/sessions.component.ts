@@ -20,6 +20,7 @@ import { GestureEventData, GestureEventDataWithState } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
 import * as animationModule from 'ui/animation';
 import * as colorModule from 'color';
+import * as platform from 'platform';
 
 
 import { ISession, IConferenceDay } from '../shared/interfaces';
@@ -239,17 +240,19 @@ export class SessionsComponent implements OnInit, AfterViewInit {
       _blurEffectView.removeFromSuperview();
     }
 
-    _blurEffectView = UIVisualEffectView.alloc().init();
-    _blurEffectView.frame = view.bounds;
-    _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (platform.isIOS) {
+      _blurEffectView = UIVisualEffectView.alloc().init();
+      _blurEffectView.frame = view.bounds;
+      _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    view.insertSubviewAtIndex(_blurEffectView, 0);
+      view.insertSubviewAtIndex(_blurEffectView, 0);
 
-    let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleLight);
+      let blurEffect = UIBlurEffect.effectWithStyle(UIBlurEffectStyleLight);
 
-    UIView.animateWithDurationAnimations(0.5, () => {
-      _blurEffectView.effect = blurEffect;
-    });
+      UIView.animateWithDurationAnimations(0.5, () => {
+        _blurEffectView.effect = blurEffect;
+      });
+    }
 
     /*
         UIView.animateWithDurationDelayUsingSpringWithDampingInitialSpringVelocityOptionsAnimationsCompletion(

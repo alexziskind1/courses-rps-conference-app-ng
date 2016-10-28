@@ -1,5 +1,5 @@
 <StackLayout>
-	<StackLayout *ngIf="session">
+	<StackLayout *ngIf="session" (loaded)="sessionWrapperLoaded()">
 
 
 		<GridLayout rows="auto, *" (swipe)="backSwipe($event)">
@@ -39,38 +39,47 @@
 
 
 			<!-- Content -->
-			<ScrollView row="1" id="scroll">
-				<GridLayout row="1" rows="auto, auto, auto, auto, *" columns="56, *" class="content">
+			<ScrollView row="1" id="scroll_">
+				<AbsoluteLayout row="1" class="content_" width="100%" height="100%" style="border-width: 1; border-color: green;">
+
 					<!-- Description -->
-					<Label #lblDesc class="description" textWrap="true" col="1" id="txtDescription" [text]="session.descriptionShort"></Label>
 
-					<!-- Button -->
-					<Button #btnDesc text="MORE" (tap)="toogleDescription()" class="more-button" row="1" col="1"></Button>
+					<Label #lblDesc class="description" textWrap="true" id="txtDescription" [text]="session.descriptionShort" style="width: 100%;"></Label>
+					<Label #lblDesc1 class="description" textWrap="true" id="txtDescription1" [text]="session.description" style="width: 100%;"></Label>
 
-					<!-- Line -->
-					<StackLayout class="horizontal-line" row="2" col="1" margin="0 0 0 0"></StackLayout>
 
-					<!-- Speakers -->
-					<Label text="SPEAKERS" class="section-header" row="3" col="1"></Label>
 
-					<ListView id="sepakers-list" [items]="session.speakers" row="4" colSpan="2" height="{{ session.speakers.length * 72 + 46 }}"
-						selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
-						<template let-item="item">
-							<GridLayout columns="56, *" class="speakers-row" (swipe)="backSwipe($event)">
-								<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
 
-								<StackLayout col="1">
-									<StackLayout orientation="horizontal">
-										<Label [text]="item.name" class="info bold"></Label>
-										<Label [text]="item.twitterName ? ' (' + item.twitterName + ')' : '' " class="info" style="color: #A17201;"></Label>
+					<GridLayout id="speakersContainer" rows="auto, auto, auto, auto, *" columns="56, *" style="border-width: 3; border-color: orange; width: 100%; height: 100%; background-color: white;">
+
+						<!-- Button -->
+						<Button #btnDesc row="1" text="MORE" (tap)="toogleDescription()" class="more-button"></Button>
+
+						<!-- Line -->
+						<StackLayout class="horizontal-line" row="2" col="1" margin="0 0 0 0"></StackLayout>
+
+						<!-- Speakers -->
+						<Label text="SPEAKERS" class="section-header" row="3" col="1"></Label>
+
+						<ListView id="sepakers-list" [items]="session.speakers" row="4" colSpan="2" height="{{ session.speakers.length * 72 + 46 }}"
+							selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
+							<template let-item="item">
+								<GridLayout columns="56, *" class="speakers-row" (swipe)="backSwipe($event)">
+									<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
+
+									<StackLayout col="1">
+										<StackLayout orientation="horizontal">
+											<Label [text]="item.name" class="info bold"></Label>
+											<Label [text]="item.twitterName ? ' (' + item.twitterName + ')' : '' " class="info" style="color: #A17201;"></Label>
+										</StackLayout>
+
+										<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
 									</StackLayout>
-
-									<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
-								</StackLayout>
-							</GridLayout>
-						</template>
-					</ListView>
-				</GridLayout>
+								</GridLayout>
+							</template>
+						</ListView>
+					</GridLayout>
+				</AbsoluteLayout>
 			</ScrollView>
 
 
