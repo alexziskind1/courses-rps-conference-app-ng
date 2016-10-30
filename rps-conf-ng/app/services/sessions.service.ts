@@ -22,6 +22,10 @@ export class SessionsService {
 
     public items: BehaviorSubject<Array<SessionModel>> = new BehaviorSubject([]);
 
+    public get filterState(): FilterState {
+        return this._filterState;
+    }
+
     constructor(private _zone: NgZone) { }
 
     public loadSessions<T>(): Promise<T> {

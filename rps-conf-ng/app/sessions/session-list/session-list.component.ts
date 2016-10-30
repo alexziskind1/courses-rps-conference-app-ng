@@ -78,6 +78,29 @@ export class SessionListComponent implements OnInit {
     }
 
     public ngOnInit() {
+        //var delay = 1000;
+
+        var source = Observable.timer(
+            5000, /* 5 seconds */
+            1000 /* 1 second */)
+            .timestamp();
+
+        /*
+                var subscription = source.subscribe(
+                    x => console.log(x.value + ': ' + x.timestamp));
+        */
+
+        this._sessionsService.items.subscribe(observer => {
+            var delay = 0;
+            observer.forEach((value: SessionModel, i: number, array: SessionModel[]) => {
+                delay = delay + 500;
+                setTimeout(() => {
+                    value.triggerShow.next(true);
+
+                    console.log('item observed: ' + value.title + ', trieggerShow: ' + value.triggerShow);
+                }, delay);
+            });
+        });
 
     }
 

@@ -33,6 +33,7 @@ export interface ISession {
     descriptionShort: string;
     //calendarEventId: string;
     isBreak: boolean;
+    percentFull: number;
 }
 
 export interface IFavouriteSession {

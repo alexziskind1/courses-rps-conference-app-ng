@@ -1,3 +1,5 @@
+import { BehaviorSubject } from "rxjs/Rx";
+
 import { ISession, IRoomInfo, ISpeaker } from '../../shared/interfaces';
 
 export class SessionModel implements ISession {
@@ -5,6 +7,9 @@ export class SessionModel implements ISession {
     private _favorite: boolean = false;
     private _startDt: Date;
     private _endDt: Date;
+
+
+    public triggerShow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     get id(): string {
         return this._session.id;
@@ -49,6 +54,10 @@ export class SessionModel implements ISession {
         return this._session.speakers;
     }
 
+    get percentFull(): number {
+        return this._session.percentFull;
+    }
+
     get favorite(): boolean {
         return this._favorite;
     }
@@ -87,6 +96,8 @@ export class SessionModel implements ISession {
             return this.description;
         }
     }
+
+
 
 
     constructor(public source: ISession) {

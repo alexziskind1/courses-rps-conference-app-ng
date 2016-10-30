@@ -1,0 +1,5 @@
+<StackLayout *ngIf="session" style="height: 12">
+	<StackLayout #fillBar *ngIf="session.triggerShow | async" class="fill-bar" [width]="session.percentFull +'%'" (loaded)="onLoaded($event, fillBar)">
+		<Label [text]="session.percentFull + '% full'" style="font-size: 10; font-weight: bold; color: #ffffff; horizontal-align: right; margin-right:10;"></Label>
+	</StackLayout>
+</StackLayout>

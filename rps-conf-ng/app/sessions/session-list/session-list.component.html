@@ -6,6 +6,7 @@
 	<ScrollView>
 		<StackLayout>
 			<StackLayout *ngFor="let item of _sessionsService.items.value; let i = index;" class="session-item">
+
 				<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
 					<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap-ng" (tap)="toggleFavorite(item, $event, i)"
@@ -23,6 +24,8 @@
 					</StackLayout>
 
 				</GridLayout>
+				<filled-bar *ngIf="!item.isBreak" [session]="item"></filled-bar>
+
 				<!-- Line -->
 				<StackLayout class="horizontal-line" margin="0 0 0 10"></StackLayout>
 			</StackLayout>
