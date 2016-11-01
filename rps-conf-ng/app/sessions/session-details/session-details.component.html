@@ -45,10 +45,12 @@
 			<ScrollView row="1" id="scroll">
 				<GridLayout row="1" rows="auto, auto, auto, auto, *" columns="56, *" class="content">
 					<!-- Description -->
-					<Label #lblDesc class="description" textWrap="true" col="1" id="txtDescription" [text]="session.descriptionShort"></Label>
-
+					<GridLayout #lblDescWrapper col="1" style=" width: 100%;" (loaded)="descWrapperLoaded(lblDescWrapper, txtDesc, lblDesc)">
+						<TextView #txtDesc class="description" editable="false" textWrap="true" [text]="session.description" style="padding: 1;margin:1;vertical-align: top;width:100%"></TextView>
+						<Label #lblDesc class="description" textWrap="true" [text]="session.description"></Label>
+					</GridLayout>
 					<!-- Button -->
-					<Button #btnDesc text="MORE" (tap)="toogleDescription()" class="more-button" row="1" col="1"></Button>
+					<Button #btnDesc text="MORE" (tap)="toogleDescription(lblDescWrapper)" class="more-button" row="1" col="1"></Button>
 
 					<!-- Line -->
 					<StackLayout class="horizontal-line" row="2" col="1" margin="0 0 0 0"></StackLayout>
