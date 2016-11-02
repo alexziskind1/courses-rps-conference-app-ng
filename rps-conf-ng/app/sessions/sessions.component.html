@@ -56,7 +56,7 @@
 
 			<!-- Sponsors -->
 			<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
-				<sponsors-list></sponsors-list>
+				<sponsors-list *ngIf="selectedViewIndex === 2"></sponsors-list>
 			</StackLayout>
 
 

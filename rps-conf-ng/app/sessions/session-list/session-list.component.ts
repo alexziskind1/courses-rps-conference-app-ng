@@ -15,7 +15,7 @@ import { FavoritesService } from '../../services/favorites.service';
 import { ISession, IConferenceDay } from '../../shared/interfaces';
 import { SessionModel } from '../shared/session.model';
 import { FilterState } from '../shared/filter-state.model';
-import { conferenceDays, hideSearchKeyboard } from '../../shared';
+import { conferenceDays, hideSearchKeyboard, slideInAnimations } from '../../shared';
 
 
 @Component({
@@ -23,7 +23,8 @@ import { conferenceDays, hideSearchKeyboard } from '../../shared';
     selector: "session-list",
     templateUrl: "session-list.component.html",
     styleUrls: ['session-list.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: slideInAnimations
 })
 export class SessionListComponent implements OnInit {
 
@@ -81,7 +82,12 @@ export class SessionListComponent implements OnInit {
 
     }
 
+    public get animationState() {
+        return this.selectedViewIndex === 2 ? 'off' : 'on';
+    }
+
     public load() {
+        console.log('load');
         var p = this._sessionsService.loadSessions<Array<ISession>>()
             .then((newSessions: Array<ISession>) => {
                 this.refresh();
