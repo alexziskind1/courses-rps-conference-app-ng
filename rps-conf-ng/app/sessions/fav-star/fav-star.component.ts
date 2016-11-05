@@ -13,6 +13,7 @@ import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gest
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
+import * as enums from 'ui/enums';
 
 //app
 import { SessionsService } from '../../services/sessions.service';
@@ -92,9 +93,20 @@ export class FavStarComponent implements OnInit {
     private animateUnfavorite(lbl: Label) {
         return new Promise((resolve, reject) => {
             this.setBackgroundPosition(lbl, '0 0');
-            resolve();
+            lbl.animate({
+                duration: 150,
+                scale: { x: 1.5, y: 1.5 },
+                curve: enums.AnimationCurve.easeIn
+            }).then(() => {
+                lbl.animate({
+                    duration: 150,
+                    scale: { x: 1, y: 1 },
+                    curve: enums.AnimationCurve.easeOut
+                }).then(() => {
+                    resolve();
+                });
+            });
         });
-
     }
 
     private setBackgroundPosition(lbl: Label, posish: string) {
