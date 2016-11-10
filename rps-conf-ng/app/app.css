@@ -40,18 +40,27 @@ SegmentedBar {
     text-align: left;
     horizontal-align: stretch;
     margin: 0 12;
+
 }
 
 .slide-out-btn-selected:highlighted {
+    /*transform: translate(50,0) scale(1.5,1.5);*/
     animation-name: slideOutBtnPop;
-    animation-duration: 0.2s;
+    animation-duration: 1;
+    /*animation-timing-function: linear;*/
+    animation-timing-function: cubic-bezier(.15,.81,.73,.97);
+    /*animation: example 4s ease-in-out 2s infinite reverse forwards;*/
+
+    /*animation: slideOutBtnPop 1000ms ease-out 1ms 1 normal forwards;*/
+
+
 }
 
 @keyframes slideOutBtnPop {
-    0% { transform: translate(0,0) scale(1,1); }
-    50% { transform: translate(10,0) scale(1.2,1.2); }
-    100% { transform: translate(0,0) scale(1,1); }
+    0% { transform: translate(0,0) scale(1,1); opacity: 1;  }
+    100% { transform: translate(0,0) scale(2.5,2.5); opacity: 0; }
 }
+
 
 .action-bar {
     height: 44;

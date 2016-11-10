@@ -5,15 +5,27 @@
 			<StackLayout style="background-color: #053140;">
 				<Image src="res://logo" class="slide-out-img" stretch="none"></Image>
 
-				<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="My agenda"></Button>
-				<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="All session"></Button>
-				<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="Sponsors"></Button>
+				<AbsoluteLayout>
+					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="My agenda"></Button>
+					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="My agenda"></Button>
+				</AbsoluteLayout>
 
-				<Button (tap)="goToAcknowledgementPage()" [class]="selectedViewIndex === 3 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="Ackknowledgements"></Button>
+				<AbsoluteLayout>
+					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="All session"></Button>
+					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="All session"></Button>
+				</AbsoluteLayout>
+
+				<AbsoluteLayout>
+					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="Sponsors"></Button>
+					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="Sponsors"></Button>
+				</AbsoluteLayout>
+
 
 			</StackLayout>
 		</GridLayout>
