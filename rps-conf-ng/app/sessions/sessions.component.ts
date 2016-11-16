@@ -16,6 +16,7 @@ import { StackLayout } from 'ui/layouts/stack-layout';
 import { ItemEventData } from 'ui/list-view';
 import { GestureEventData } from 'ui/gestures';
 import * as frameModule from 'ui/frame';
+import { Animation, AnimationDefinition } from 'ui/animation';
 
 //app
 import { ISession, IConferenceDay } from '../shared/interfaces';
@@ -102,10 +103,22 @@ export class SessionsComponent implements OnInit, AfterViewInit {
   }
 
   public startBackgroundAnimation(background) {
-    background.animate({
+
+    let def: AnimationDefinition = {
       scale: { x: 1.0, y: 1.0 },
-      duration: 10000
-    });
+      duration: 10000,
+      target: background
+    };
+
+    let ani: Animation = new Animation([def]);
+    ani.play();
+
+    /*
+        background.animate({
+          scale: { x: 1.0, y: 1.0 },
+          duration: 10000
+        });
+        */
   }
 
 
