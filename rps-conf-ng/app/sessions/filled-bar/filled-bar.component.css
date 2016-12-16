@@ -1,0 +1,42 @@
+.fill-bar {
+    horizontal-align: left;
+    background-color: #3a8d24;
+    animation-name: fillBarSlide;
+    animation-duration: 1s;
+}
+
+@keyframes fillBarSlide {
+    from { transform: translate(-500, 0) }
+    to { transform: translate(0, 0) }
+}
+
+.level1 { animation-name: level1Change; animation-duration: 2s; animation-fill-mode: forwards; }
+.level2 { animation-name: level2Change; animation-duration: 2s; animation-fill-mode: forwards; }
+.level3 { animation-name: level3Change; animation-duration: 2s; animation-fill-mode: forwards; }
+.level4 { animation-name: level4Change; animation-duration: 2s; animation-fill-mode: forwards; }
+.level5 { animation-name: level5Change; animation-duration: 2s; animation-fill-mode: forwards; }
+
+@keyframes level1Change {
+    0% { background-color: #3a8d24; }
+    100% { background-color: #3a8d24; }
+}
+
+@keyframes level2Change {
+    0% { background-color: #3a8d24; }
+    100% { background-color: #659a1f; }
+}
+
+@keyframes level3Change {
+    0% { background-color: #3a8d24; }
+    100% { background-color: #997815; }
+}
+
+@keyframes level4Change {
+    0% { background-color: #3a8d24; }
+    100% { background-color: #87581c; }
+}
+
+@keyframes level5Change {
+    0% { background-color: #3a8d24; }
+    100% { background-color: #a41818; }
+}

@@ -31,13 +31,12 @@ export interface ISession {
     speakers: Array<ISpeaker>;
     description: string;
     descriptionShort: string;
-    //calendarEventId: string;
     isBreak: boolean;
+    percentFull: number; //added to show session attendance
 }
 
 export interface IFavouriteSession {
     sessionId: string;
-    //calendarEventId: string;
 }
 
 export interface IConfTimeSlot {

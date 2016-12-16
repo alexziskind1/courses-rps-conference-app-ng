@@ -1,5 +1,5 @@
 //angular
-import { Component, Input, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 
@@ -15,14 +15,16 @@ import { FavoritesService } from '../../services/favorites.service';
 import { ISession, IConferenceDay } from '../../shared/interfaces';
 import { SessionModel } from '../shared/session.model';
 import { FilterState } from '../shared/filter-state.model';
-import { conferenceDays, hideSearchKeyboard } from '../../shared';
+import { conferenceDays, hideSearchKeyboard, slideInAnimations } from '../../shared';
 
 
 @Component({
     moduleId: module.id,
     selector: "session-list",
     templateUrl: "session-list.component.html",
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['session-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: slideInAnimations
 })
 export class SessionListComponent implements OnInit {
 
@@ -31,6 +33,8 @@ export class SessionListComponent implements OnInit {
     private _selectedViewIndex: number;
 
     public dayHeader: string = '';
+
+    @Output() notifySessionSelected: EventEmitter<SessionModel> = new EventEmitter<SessionModel>();
     @ViewChild('searchBar') public searchBar: ElementRef;
 
     public get selectedViewIndex() {
@@ -60,6 +64,8 @@ export class SessionListComponent implements OnInit {
         }
     }
 
+    @Input() public sessionCardVisible: boolean;
+
     public get search(): string {
         return this._search;
     }
@@ -70,6 +76,10 @@ export class SessionListComponent implements OnInit {
         }
     }
 
+    public get animationState() {
+        return this.selectedViewIndex === 2 ? 'off' : 'on';
+    }
+
     constructor(private _sessionsService: SessionsService,
         private _zone: NgZone,
         private _routerExtensions: RouterExtensions) {
@@ -77,6 +87,19 @@ export class SessionListComponent implements OnInit {
     }
 
     public ngOnInit() {
+        this._sessionsService.items.subscribe(observer => {
+            var delay = 0;
+            observer.forEach((value: SessionModel, i: number, array: SessionModel[]) => {
+                delay = delay + 500;
+                setTimeout(() => {
+                    value.triggerShow.next(true);
+                }, delay);
+
+            });
+        });
+    }
+
+    public load() {
         var p = this._sessionsService.loadSessions<Array<ISession>>()
             .then((newSessions: Array<ISession>) => {
                 this.refresh();
@@ -91,8 +114,10 @@ export class SessionListComponent implements OnInit {
         this._sessionsService.update(filterState);
     }
 
-    public selectSession(args: ItemEventData) {
-        var session = <SessionModel>args.view.bindingContext;
+    public selectSession(args: ItemEventData, session: SessionModel) {
+        if (this.sessionCardVisible)
+            return;
+
         this.hideSearchKeyboard();
         if (!session.isBreak) {
             let link = ['/session-details', session.id];
@@ -100,11 +125,8 @@ export class SessionListComponent implements OnInit {
         }
     }
 
-    public toggleFavorite(session: SessionModel) {
-        this._sessionsService.toggleFavorite(session)
-            .then(() => {
-                console.log('done toggling favorite');
-            });
+    public showSessionCard(session: SessionModel) {
+        this.notifySessionSelected.emit(session);
     }
 
     private hideSearchKeyboard() {

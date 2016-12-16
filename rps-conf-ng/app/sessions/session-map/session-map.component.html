@@ -16,8 +16,12 @@
 			<!-- Content -->
 			<GridLayout row="1" class="content">
 				<StackLayout *ngIf="image">
-					<Image id="imgMap" [imageSource]="image | async" stretch="aspectFit" horizontalAlignment="left" verticalAlignment="center"
-						(swipe)="backSwipe($event)"></Image>
+					<GridLayout (pan)="onPan($event)" (pinch)="onPinch($event)" (doubleTap)="onDoubleTap($event)" (loaded)="onImageWrapperLoaded()">
+						<AbsoluteLayout #imageWrapper width="100%" height="100%">
+							<Image #imgMap src="~/images/rooms/conf-map.png" stretch="aspectFill"></Image>
+							<Image #imgPin src="~/images/rooms/map-marker-icon.png" stretch="aspectFit" opacity="0"></Image>
+						</AbsoluteLayout>
+					</GridLayout>
 				</StackLayout>
 				<ActivityIndicator [busy]="isLoading" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
 			</GridLayout>

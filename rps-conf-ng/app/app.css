@@ -44,6 +44,17 @@ SegmentedBar {
     margin: 0 12;
 }
 
+.slide-out-btn-selected:highlighted {
+    animation-name: slideOutBtnPop;
+    animation-duration: 1;
+    animation-timing-function: cubic-bezier(.13,.81,.61,.94);
+}
+
+@keyframes slideOutBtnPop {
+    0% { transform: scale(1,1); opacity: 1; }
+    100% { transform: scale(2.5,2.5); opacity: 0; }
+}
+
 .action-bar {
     height: 44;
 }
@@ -187,4 +198,87 @@ SegmentedBar {
 
 .bold {
     font-weight: bold;
+}
+
+
+.menu-button {
+    margin-top: 15;
+}
+
+.bar {
+    background-color: #fac950;
+    width: 22;
+    height: 4;
+    margin-bottom: 3;
+    border-radius: 2;
+}
+
+.bar1.menu-bar-on {
+    animation-name: bar1on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+}
+
+.bar1.menu-bar-off {
+    animation-name: bar1on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-direction: reverse;
+}
+
+@keyframes bar1on {
+    from { transform: translate(0, 0) rotate(0deg); }
+    to { transform: translate(0, 7) rotate(45deg); }
+}
+
+.bar2.menu-bar-on {
+    animation-name: bar2on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+}
+.bar2.menu-bar-off {
+    animation-name: bar2on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-direction: reverse;
+}
+
+@keyframes bar2on {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(-10, 0); opacity: 0; }
+}
+
+.bar3.menu-bar-on {
+    animation-name: bar3on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+}
+
+.bar3.menu-bar-off {
+    animation-name: bar3on;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-direction: reverse;
+}
+
+@keyframes bar3on {
+    from { transform: translate(0, 0) rotate(0deg); }
+    to { transform: translate(0, -7) rotate(-45deg); }
+}
+
+.full-screen {
+    width: 100%;
+    height: 100%;
 }

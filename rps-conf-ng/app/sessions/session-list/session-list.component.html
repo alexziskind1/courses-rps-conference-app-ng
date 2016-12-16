@@ -2,21 +2,27 @@
 <SearchBar #searchBar [(ngModel)]="search" hint="Search" class="search" textFieldBackgroundColor="white"></SearchBar>
 
 <!-- List -->
-<ListView [items]="_sessionsService.items | async" row="1" separatorColor="#fac950" (itemTap)="selectSession($event)" class="listView">
-	<template let-item="item" let-i="index">
-		<GridLayout columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
+<StackLayout row="1" class="listView" (loaded)="load()">
+	<ScrollView>
+		<StackLayout>
+			<StackLayout *ngFor="let item of _sessionsService.items.value; let i = index;" class="session-item">
+				<GridLayout [@slideIn]="animationState" (longpress)="showSessionCard(item)" columns="auto, *" [class]="item.isBreak ? 'break-row' : 'list-view-row'">
 
-			<GridLayout [visibility]="item.isBreak ? 'collapsed' : 'visible' " class="favourite-wrap" (tap)="toggleFavorite(item)" columns="auto"
-				rows="auto">
-				<Image id="imgFav" stretch="none" class="icon-image" [src]="item.favorite ? 'res://ic_add_to_fav_1' : 'res://ic_add_to_fav' "></Image>
-			</GridLayout>
+					<fav-star *ngIf="!item.isBreak" [item]="item"></fav-star>
 
-			<StackLayout col="1">
-				<Label [text]="item.range" class="info-orange bold"></Label>
-				<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
-				<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+					<StackLayout [@slideIn]="animationState" col="1" (tap)="selectSession($event, item)">
+						<Label [text]="item.range" class="info-orange bold"></Label>
+						<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
+						<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+					</StackLayout>
+
+				</GridLayout>
+
+				<filled-bar *ngIf="!item.isBreak" [session]="item"></filled-bar>
+
+				<!-- Line -->
+				<StackLayout class="horizontal-line" margin="0 0 0 10"></StackLayout>
 			</StackLayout>
-
-		</GridLayout>
-	</template>
-</ListView>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>

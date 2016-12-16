@@ -14,11 +14,11 @@ export function generateSpeakers(): Array<ISpeaker> {
     var avatarsWomen = getSpeakerAvatars('images/speakers/base64/women.txt');
     for (var i = 0; i <= NUM_SPEAKERS; i++) {
         var genderBool = faker.random.boolean();
-        var genderInt =  parseInt(genderBool + '');
+        var genderInt = parseInt(genderBool + '');
         var firstName = faker.name.firstName(genderInt);
         var lastName = faker.name.lastName(genderInt);
-        var picture = genderBool ? avatarsMen[faker.random.number(avatarsMen.length-1)] : avatarsWomen[faker.random.number(avatarsWomen.length-1)];
-        
+        var picture = genderBool ? avatarsMen[faker.random.number(avatarsMen.length - 1)] : avatarsWomen[faker.random.number(avatarsWomen.length - 1)];
+
         let s: ISpeaker = {
             id: faker.random.uuid(),
             name: firstName + ' ' + lastName,
@@ -27,7 +27,7 @@ export function generateSpeakers(): Array<ISpeaker> {
             picture: picture,
             twitterName: '@' + faker.internet.userName(firstName, lastName),
         };
-        
+
         speakerList.push(s);
     }
 
@@ -48,7 +48,7 @@ export function generateRoomInfos(): Array<IRoomInfo> {
     return roomInfoList;
 }
 
-export function generateSessions(speakers: Array<ISpeaker>, roomInfos: Array<IRoomInfo>) : Array<ISession> {
+export function generateSessions(speakers: Array<ISpeaker>, roomInfos: Array<IRoomInfo>): Array<ISession> {
     var sessionList: Array<ISession> = [];
     var idSeed = 1000;
     for (var confDay of conferenceDays) {
@@ -65,15 +65,15 @@ export function generateSessions(speakers: Array<ISpeaker>, roomInfos: Array<IRo
                     roomInfo: null,
                     speakers: [],
                     description: '',
-                    descriptionShort: ''
-                    //calendarEventId: ''
+                    descriptionShort: '',
+                    percentFull: 0
                 };
                 sessionList.push(s);
             }
             else {
-                var subSpeakers = getRandomArrayElements(speakers, faker.random.number({min: 1, max: 3}));
-                var roomInfo = roomInfos[faker.random.number(roomInfos.length-1)];
-                
+                var subSpeakers = getRandomArrayElements(speakers, faker.random.number({ min: 1, max: 3 }));
+                var roomInfo = roomInfos[faker.random.number(roomInfos.length - 1)];
+
                 let s: ISession = {
                     id: (idSeed++).toString(),
                     title: toTitleCase(faker.company.bs()),
@@ -83,9 +83,9 @@ export function generateSessions(speakers: Array<ISpeaker>, roomInfos: Array<IRo
                     room: roomInfo.name,
                     roomInfo: roomInfo,
                     speakers: subSpeakers,
-                    description: faker.lorem.paragraph(),
-                    descriptionShort: faker.lorem.sentence()
-                    //calendarEventId: faker.random.uuid()
+                    description: faker.lorem.paragraph(8),
+                    descriptionShort: faker.lorem.sentence(),
+                    percentFull: faker.random.number({ min: 20, max: 100 })
                 };
                 sessionList.push(s);
             }
@@ -99,7 +99,7 @@ function getSpeakerAvatars(path) {
     var currentAppFolder = fileSystemModule.knownFolders.currentApp();
     var menAvatarsFile = currentAppFolder.getFile(path);
     var fileText = menAvatarsFile.readTextSync();
-    
+
     var lines = fileText.split('\n');
     for (var i = 0; i < lines.length; i++) {
         avatarList.push('data:image/png;base64,' + lines[i]);
@@ -107,7 +107,7 @@ function getSpeakerAvatars(path) {
     return avatarList;
 }
 
-function generateTimeSlots(confDay: IConferenceDay) : Array<IConfTimeSlot> {
+function generateTimeSlots(confDay: IConferenceDay): Array<IConfTimeSlot> {
     var timeSlotList: Array<IConfTimeSlot> = [];
     var startTimeList = getTimeRange(addMinutes(confDay.date, 240), addMinutes(confDay.date, 780), SESSION_LENGTH);
     for (var startTime of startTimeList) {
@@ -127,7 +127,7 @@ function generateTimeSlots(confDay: IConferenceDay) : Array<IConfTimeSlot> {
     return timeSlotList;
 }
 
-function getTimeRange(startTime: Date, endTime: Date, minutesBetween: number) : Array<Date> {
+function getTimeRange(startTime: Date, endTime: Date, minutesBetween: number): Array<Date> {
     var startTimeList: Array<Date> = [];
     var diffInMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
     var periods: number = diffInMinutes / minutesBetween;
@@ -139,7 +139,7 @@ function getTimeRange(startTime: Date, endTime: Date, minutesBetween: number) : 
 }
 
 function addMinutes(date: Date, minutes: number) {
-    return new Date(date.getTime() + minutes*60000);
+    return new Date(date.getTime() + minutes * 60000);
 }
 
 function getRandomArrayElements(arr, count) {
@@ -154,5 +154,5 @@ function getRandomArrayElements(arr, count) {
 }
 
 function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }

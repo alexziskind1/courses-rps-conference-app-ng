@@ -11,6 +11,10 @@ import { GestureEventData, SwipeGestureEventData, SwipeDirection } from 'ui/gest
 import { Page } from "ui/page";
 import { Button } from 'ui/button';
 import { Label } from 'ui/label';
+import { View } from 'ui/core/view';
+import { Layout } from 'ui/layouts/layout';
+import { TextView } from 'ui/text-view';
+
 
 //app
 import { SessionsService } from '../../services/sessions.service';
@@ -69,18 +73,74 @@ export class SessionDetailsComponent implements OnInit {
       });
   }
 
-  public toogleDescription() {
+  private descHeight = 20;
+
+  public descWrapperLoaded(lblDescWrapper: Layout, txtDesc: TextView, lblDesc: Label) {
+    let lblHeight = lblDesc.getMeasuredHeight();
+    this.descHeight = lblHeight;
+
+    lblDesc.visibility = 'collapsed';
+    lblDescWrapper.height = 60;
+
+    if (txtDesc.ios) {
+      txtDesc.ios.scrollEnabled = false;
+    }
+    if (txtDesc.android) {
+      //txtDesc.android.//android equivalent of scrollEnabled
+    }
+
+  }
+
+  public toogleDescription(wrapper: Layout) {
     let btn = <Button>this.btnDesc.nativeElement;
     let lbl = <Label>this.lblDesc.nativeElement;
     if (btn.text === 'MORE') {
       btn.text = 'LESS';
-      lbl.text = this.session.description;
+      //lbl.text = this.session.description;
+      changeHeight(wrapper, toTheFifth, 1000, 60, this.descHeight);
     }
     else {
       btn.text = 'MORE';
-      lbl.text = this.session.descriptionShort;
+      //lbl.text = this.session.descriptionShort;
       //scroll.scrollToVerticalOffset(0, false);
+      changeHeight(wrapper, toTheFifth, 1000, this.descHeight, 60);
     }
   }
 
+}
+
+function changeHeight(view: View, deltaCalc: (p) => {}, duration?: number, from?: number, to?: number) {
+  var _from = from || 1;
+  var _to = to || 500;
+
+  animate({
+    duration: duration || 1000, //1 second by default
+    delay: 5,
+    delta: deltaCalc,
+    step: function (delta: number) {
+      view.height = (to - from) * delta + from;
+    }
+  });
+}
+
+function animate(opts) {
+  var start = new Date();
+
+  var id = setInterval(function () {
+    var timePassed = <any>(new Date()) - <any>start;
+    var progress = timePassed / opts.duration;
+    if (progress > 1) progress = 1;
+
+    var delta = opts.delta(progress);
+    opts.step(delta);
+
+    if (progress == 1) {
+      clearInterval(id);
+    }
+  }, opts.delay || 10);
+
+}
+
+function toTheFifth(progress) {
+  return Math.pow(progress, 5);
 }

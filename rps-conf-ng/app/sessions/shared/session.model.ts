@@ -1,3 +1,5 @@
+import { BehaviorSubject } from "rxjs/Rx";
+
 import { ISession, IRoomInfo, ISpeaker } from '../../shared/interfaces';
 
 export class SessionModel implements ISession {
@@ -5,6 +7,13 @@ export class SessionModel implements ISession {
     private _favorite: boolean = false;
     private _startDt: Date;
     private _endDt: Date;
+
+    public triggerShow: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    //added to show session attendance
+    get percentFull(): number {
+        return this._session.percentFull;
+    }
 
     get id(): string {
         return this._session.id;

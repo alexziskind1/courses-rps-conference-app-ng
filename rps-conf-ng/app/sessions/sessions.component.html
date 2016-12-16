@@ -1,19 +1,30 @@
-<RadSideDrawer #drawer [transition]="sideDrawerTransition" selectionBehavior="None">
+<RadSideDrawer #drawer [transition]="sideDrawerTransition" (drawerClosing)="drawerClosing($event)" selectionBehavior="None">
 	<StackLayout tkDrawerContent>
 
 		<GridLayout rows="*, auto">
 			<StackLayout style="background-color: #053140;">
 				<Image src="res://logo" class="slide-out-img" stretch="none"></Image>
 
-				<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="My agenda"></Button>
-				<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="All session"></Button>
-				<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="Sponsors"></Button>
+				<AbsoluteLayout>
+					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="My agenda"></Button>
+					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="My agenda"></Button>
+				</AbsoluteLayout>
 
-				<Button (tap)="goToAcknowledgementPage()" [class]="selectedViewIndex === 3 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-					text="Ackknowledgements"></Button>
+				<AbsoluteLayout>
+					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="All sessions"></Button>
+					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="All sessions"></Button>
+				</AbsoluteLayout>
+
+				<AbsoluteLayout>
+					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="Sponsors"></Button>
+					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
+						text="Sponsors"></Button>
+				</AbsoluteLayout>
 
 			</StackLayout>
 		</GridLayout>
@@ -21,42 +32,60 @@
 
 	</StackLayout>
 	<StackLayout tkMainContent>
-		<GridLayout rows="auto, *">
+		<AbsoluteLayout>
+			<GridLayout rows="auto, *" class="full-screen">
 
+				<!-- Header -->
+				<GridLayout>
+					<StackLayout #background class="page-header" scaleX="1.4" scaleY="1.4" (loaded)="startBackgroundAnimation(background)">
+					</StackLayout>
 
-			<!-- Header -->
-			<StackLayout class="page-header">
-				<GridLayout class="action-bar darker">
-					<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
-						<Image stretch="none" class="icon-image" src="res://ic_menu"></Image>
-					</GridLayout>
-					<Label [text]="actionBarTitle" class="action-bar-title"></Label>
+					<StackLayout>
+						<GridLayout class="action-bar darker">
+							<GridLayout class="action-wrap" (tap)="showSlideout($event)" columns="auto" horizontalAlignment="left">
+
+								<StackLayout #myMenuBtn class="menu-button">
+									<Label #myMenuBtnBar1 class="bar bar1"></Label>
+									<Label #myMenuBtnBar2 class="bar bar2"></Label>
+									<Label #myMenuBtnBar3 class="bar bar3"></Label>
+								</StackLayout>
+
+							</GridLayout>
+							<Label [text]="actionBarTitle" class="action-bar-title"></Label>
+						</GridLayout>
+
+						<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
+							<GridLayout class="darker">
+								<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+							</GridLayout>
+
+							<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+						</StackLayout>
+					</StackLayout>
 				</GridLayout>
 
-				<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
-					<GridLayout class="darker">
-						<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
-					</GridLayout>
 
-					<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
+				<!-- Sessions Views -->
+				<GridLayout rows="auto, *" row="1">
+					<session-list (notifySessionSelected)="sessionSelected($event)" [sessionCardVisible]="sessionCardVisible" [selectedViewIndex]="selectedViewIndex"
+						[selectedIndex]="selectedIndex"></session-list>
+				</GridLayout>
+
+
+				<!-- Sponsors -->
+				<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
+					<sponsors-list *ngIf="selectedViewIndex === 2"></sponsors-list>
 				</StackLayout>
-			</StackLayout>
 
 
-
-			<!-- Sessions Views -->
-			<GridLayout rows="auto, *" row="1">
-				<session-list [selectedViewIndex]="selectedViewIndex" [selectedIndex]="selectedIndex"></session-list>
 			</GridLayout>
 
+			<GridLayout *ngIf="selectedSession" class="full-screen darker" (tap)="hideSessionCard()">
+				<GridLayout #sessionCardWrapper (loaded)="selectedSessionCardLoaded(sessionCardWrapper)">
+					<session-card [session]="selectedSession" (notifyCardClosed)="hideSessionCard($event)"> </session-card>
+				</GridLayout>
+			</GridLayout>
 
-			<!-- Sponsors -->
-			<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
-				<sponsors-list></sponsors-list>
-			</StackLayout>
-
-
-		</GridLayout>
-
+		</AbsoluteLayout>
 	</StackLayout>
 </RadSideDrawer>
