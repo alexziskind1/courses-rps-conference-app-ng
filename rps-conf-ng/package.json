@@ -6,28 +6,36 @@
   "nativescript": {
     "id": "org.nativescript.rpsconfng",
     "tns-ios": {
-      "version": "2.3.0"
+      "version": "2.5.0"
+    },
+    "tns-android": {
+      "version": "2.5.0"
     }
   },
   "dependencies": {
-    "@angular/common": "2.0.1",
-    "@angular/compiler": "2.0.1",
-    "@angular/core": "2.0.1",
-    "@angular/forms": "2.0.1",
-    "@angular/http": "2.0.1",
-    "@angular/platform-browser": "2.0.1",
-    "@angular/platform-browser-dynamic": "2.0.1",
-    "@angular/platform-server": "2.0.1",
-    "@angular/router": "3.0.1",
+    "@angular/common": "2.4.3",
+    "@angular/compiler": "2.4.3",
+    "@angular/core": "2.4.3",
+    "@angular/forms": "2.4.3",
+    "@angular/http": "2.4.3",
+    "@angular/platform-browser": "2.4.3",
+    "@angular/platform-browser-dynamic": "2.4.3",
+    "@angular/router": "3.4.3",
     "faker": "^3.1.0",
-    "nativescript-angular": "1.0.1",
-    "nativescript-telerik-ui": "^1.4.1",
-    "reflect-metadata": "^0.1.8",
-    "tns-core-modules": "2.3.0"
+    "nativescript-angular": "1.4.0",
+    "nativescript-telerik-ui": "1.6.0",
+    "nativescript-theme-core": "~1.0.2",
+    "reflect-metadata": "~0.1.8",
+    "rxjs": "~5.0.1",
+    "tns-core-modules": "2.5.0"
   },
   "devDependencies": {
-    "nativescript-dev-typescript": "^0.3.2",
-    "typescript": "^2.0.3",
-    "zone.js": "^0.6.21"
+    "babel-traverse": "6.22.1",
+    "babel-types": "6.22.0",
+    "babylon": "6.15.0",
+    "lazy": "1.0.11",
+    "nativescript-dev-typescript": "^0.3.5",
+    "typescript": "^2.1.6",
+    "zone.js": "~0.7.2"
   }
 }

@@ -3,8 +3,27 @@
 
 * **This version is the Angular2 verison of the app**
 
-* **Currently in progress**
+*IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, then it currently has a bug that doesn't allow copying of all necessary files for this demo. 
 
+To check your version run this:
+```
+tns --version
+```
+
+Until a patch is issued, it is recommended to use the @next version of the NativeScript CLI. You can install it as follows:
+
+If you are on Windows, install the @next version like this:
+```
+npm install nativescript -g
+```
+
+If you are on a Mac, install the @next version like this:
+```
+sudo npm install nativescript -g
+
+```
+
+------------
 This is a companion app to my Pluralsight course Building Cross Platform Native Mobile Applications with NativeScript.
 This app is based on the [TelerikNEXT app](https://github.com/NativeScript/sample-TelerikNEXT/) sample with a few things added.
 
