@@ -3,7 +3,7 @@
 
 * **This version is the Angular2 verison of the app**
 
-*IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, then it currently has a bug that doesn't allow copying of all necessary files for this demo. 
+*IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, then it currently has a bug that doesn't allow copying of all necessary files for this demo. Please use the ```update_2.5.0``` branch of this repository if you're on 2.5.x.
 
 To check your version run this:
 ```
@@ -22,6 +22,39 @@ If you are on a Mac, install the @next version like this:
 sudo npm install nativescript -g
 
 ```
+
+Clone this repository
+```
+git clone https://github.com/alexziskind1/courses-rps-conference-app-ng.git
+```
+
+Go into the repository directory
+```
+cd courses-rps-conference-app-ng
+```
+
+Change to the ```update_2.5.0``` branch
+```
+git checkout update_2.5.0
+```
+
+Go into the project directory
+```
+cd rps-conf
+```
+
+Run the project on iOS
+```
+tns run ios
+```
+
+Run the project on Android (I start up my Genymotion emulator before this step)
+```
+tns run android
+```
+
+*NOTE:* Only the finished application in the ```rps-conf-ng``` folder will be updated to the latest versions of NativeScript. The ```course-modules``` will not be updated.
+
 
 ------------
 This is a companion app to my Pluralsight course Building Cross Platform Native Mobile Applications with NativeScript.
