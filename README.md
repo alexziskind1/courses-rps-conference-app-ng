@@ -3,25 +3,14 @@
 
 * **This version is the Angular2 verison of the app**
 
-*IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, then it currently has a bug that doesn't allow copying of all necessary files for this demo. Please use the ```update_2.5.0``` branch of this repository if you're on 2.5.x.
+*IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, please upgrade to 2.5.1 right away. 
+Please use the ```update_2.5.1``` branch of this repository if you're on 2.5.x.
 
 To check your version run this:
 ```
 tns --version
 ```
 
-Until a patch is issued, it is recommended to use the @next version of the NativeScript CLI. You can install it as follows:
-
-If you are on Windows, install the @next version like this:
-```
-npm install nativescript -g
-```
-
-If you are on a Mac, install the @next version like this:
-```
-sudo npm install nativescript -g
-
-```
 
 Clone this repository
 ```
@@ -33,9 +22,9 @@ Go into the repository directory
 cd courses-rps-conference-app-ng
 ```
 
-Change to the ```update_2.5.0``` branch
+Change to the ```update_2.5.1``` branch
 ```
-git checkout update_2.5.0
+git checkout update_2.5.1
 ```
 
 Go into the project directory
