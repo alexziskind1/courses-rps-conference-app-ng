@@ -1,7 +1,7 @@
 <GridLayout class="favourite-wrap-ng" (tap)="toggleFavorite(item, starLbl)" columns="auto" rows="auto">
     <AbsoluteLayout class="star-img-wrapper">
-        <Label #starLbl class="star-img-sprite" [visibility]="isToggling ? 'visible' : 'collapsed' "></Label>
-        <Label *ngIf="item.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
-        <Label *ngIf="!item.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapsed' : 'visible' "></Label>
+        <Label #starLbl class="star-img-sprite" [visibility]="isToggling ? 'visible' : 'collapse' "></Label>
+        <Label *ngIf="item.favorite" class="star-img-fav" [visibility]="isToggling ? 'collapse' : 'visible' "></Label>
+        <Label *ngIf="!item.favorite" class="star-img-unfav" [visibility]="isToggling ? 'collapse' : 'visible' "></Label>
     </AbsoluteLayout>
 </GridLayout>

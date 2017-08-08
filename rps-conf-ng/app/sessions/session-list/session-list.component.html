@@ -13,7 +13,7 @@
 					<StackLayout [@slideIn]="animationState" col="1" (tap)="selectSession($event, item)">
 						<Label [text]="item.range" class="info-orange bold"></Label>
 						<Label [text]="item.title" textWrap="true" class="info-bigger"></Label>
-						<Label [visibility]="item.room ? 'visible' : 'collapsed' " [text]="item.room" class="info-orange"></Label>
+						<Label [visibility]="item.room ? 'visible' : 'collapse' " [text]="item.room" class="info-orange"></Label>
 					</StackLayout>
 
 				</GridLayout>

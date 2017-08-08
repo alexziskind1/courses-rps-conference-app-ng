@@ -118,11 +118,11 @@ export class SessionMapComponent implements OnInit {
   }
 
   private calculatePinImageLocation(roomLocFullPoint: Point, mapFullSize: Size, pinImgSize: Size, scale: number): Point {
-    console.log('tScale: ' + scale);
+    //console.log('tScale: ' + scale);
     let newX = roomLocFullPoint.x / scale;
     let newY = roomLocFullPoint.y / scale;
     let roomScaledPoint: Point = { x: newX, y: newY };
-    console.dir(roomScaledPoint);
+    //console.dir(roomScaledPoint);
 
     let pinImageWidthSpecifiedInMarkup = pinImgSize.width;
     let pinImageLocPoint: Point = { x: roomScaledPoint.x - (pinImageWidthSpecifiedInMarkup / 2), y: roomScaledPoint.y - pinImageWidthSpecifiedInMarkup };
@@ -142,7 +142,7 @@ export class SessionMapComponent implements OnInit {
   }
 
   public onPan(args: PanGestureEventData) {
-    console.log("PAN[" + states[args.state] + "] deltaX: " + Math.round(args.deltaX) + " deltaY: " + Math.round(args.deltaY));
+    //console.log("PAN[" + states[args.state] + "] deltaX: " + Math.round(args.deltaX) + " deltaY: " + Math.round(args.deltaY));
 
     if (args.state === 1) {
       this.prevDeltaX = 0;
@@ -161,13 +161,13 @@ export class SessionMapComponent implements OnInit {
       this.prevDeltaX = args.deltaX;
       this.prevDeltaY = args.deltaY;
 
-      console.log('tx: ' + this.imageWrapper.translateX);
+      //.log('tx: ' + this.imageWrapper.translateX);
     }
   }
 
   public onPinch(args: PinchGestureEventData) {
     if (args.state === 1) {
-      console.log('state: ' + args.state);
+      //console.log('state: ' + args.state);
       const newOriginX = args.getFocusX() - this.imageWrapper.translateX;
       const newOriginY = args.getFocusY() - this.imageWrapper.translateY;
 
@@ -198,8 +198,8 @@ export class SessionMapComponent implements OnInit {
   }
 
   public onDoubleTap(args: TouchGestureEventData) {
-    console.log("DOUBLETAP:");
-    console.dir(args);
+    //console.log("DOUBLETAP:");
+    //console.dir(args);
 
     var tx: number = 0;
     var ty: number = 0;

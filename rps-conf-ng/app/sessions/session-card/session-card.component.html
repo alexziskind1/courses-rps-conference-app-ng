@@ -25,7 +25,7 @@
 
                         <ListView id="sepakers-list" [items]="session.speakers" height="{{ session.speakers.length * 72 + 46 }}" selectedBackgroundColor="#fac950"
                             separatorColor="#FFFFFF">
-                            <template let-item="item">
+                            <ng-template let-item="item">
                                 <GridLayout columns="56, *" class="speakers-row card-speaker">
                                     <Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
 
@@ -37,7 +37,7 @@
                                         <Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
                                     </StackLayout>
                                 </GridLayout>
-                            </template>
+                            </ng-template>
                         </ListView>
                     </StackLayout>
                 </ScrollView>

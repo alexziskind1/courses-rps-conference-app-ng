@@ -14,6 +14,7 @@ import { Button } from 'ui/button';
 import { Label } from 'ui/label';
 import { StackLayout } from 'ui/layouts/stack-layout';
 import { ItemEventData } from 'ui/list-view';
+import { SegmentedBarItem } from 'ui/segmented-bar';
 import { GestureEventData } from 'ui/gestures';
 import { Animation, AnimationDefinition } from 'ui/animation';
 import * as frameModule from 'ui/frame';
@@ -40,7 +41,6 @@ export class SessionsComponent implements OnInit, AfterViewInit {
 
     private _menuOnClass = 'menu-bar-on';
     private _menuOffClass = 'menu-bar-off';
-    private _selectedIndex: number;
 
     public isLoading = true;
     public isSessionsPage = true;
@@ -69,20 +69,25 @@ export class SessionsComponent implements OnInit, AfterViewInit {
         return this.selectedSession != null;
     }
 
-    public get confDayOptions(): Array<IConferenceDay> {
-        return conferenceDays;
+    get confDayOptions(): Array<SegmentedBarItem> {
+        const items = [];
+        conferenceDays.forEach(cd => {
+            let segmentedBarItem = new SegmentedBarItem();
+            segmentedBarItem.title = cd.title;
+            items.push(segmentedBarItem);
+        });
+        return items;
     }
 
-    public get selectedIndex(): number {
-        return this._selectedIndex;
-    }
-    public set selectedIndex(value: number) {
-        if (this._selectedIndex !== value) {
-            this._selectedIndex = value;
+    public selectedIndex: number;
+
+    public selectedIndexChange(args) {
+        const value = args.value;
+        if (this.selectedIndex !== value) {
+            this.selectedIndex = value;
             this.dayHeader = conferenceDays[value].desc;
         }
     }
-
 
     constructor(
         private _page: Page,
@@ -92,6 +97,7 @@ export class SessionsComponent implements OnInit, AfterViewInit {
         _page.backgroundSpanUnderStatusBar = true;
         this.selectedIndex = 0;
         this.selectedViewIndex = 1;
+        this.dayHeader = conferenceDays[0].desc;
     }
 
     public ngOnInit() {

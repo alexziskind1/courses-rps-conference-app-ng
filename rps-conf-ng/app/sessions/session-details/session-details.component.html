@@ -13,7 +13,7 @@
 					</StackLayout>
 
 					<StackLayout orientation="horizontal" horizontalAlignment="right">
-						<GridLayout class="action-wrap" (tap)="showMapTap()" columns="auto" horizontalAlignment="right" [visibility]="session.room ? 'visible' : 'collapsed'">
+						<GridLayout class="action-wrap" (tap)="showMapTap()" columns="auto" horizontalAlignment="right" [visibility]="session.room ? 'visible' : 'collapse'">
 							<Image stretch="none" class="icon-image" src="res://ic_map"></Image>
 						</GridLayout>
 
@@ -55,8 +55,8 @@
 					<Label text="SPEAKERS" class="section-header" row="3" col="1"></Label>
 
 					<ListView id="sepakers-list" [items]="session.speakers" row="4" colSpan="2" height="{{ session.speakers.length * 72 + 46 }}"
-						selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
-						<template let-item="item">
+					 selectedBackgroundColor="#fac950" separatorColor="#FFFFFF">
+						<ng-template let-item="item">
 							<GridLayout columns="56, *" class="speakers-row" (swipe)="backSwipe($event)">
 								<Image [src]="item.picture" class="speaker-image" stretch="aspectFit" rowSpan="2"></Image>
 
@@ -69,7 +69,7 @@
 									<Label [text]="item.title" class="info" textWrap="true" style="font-style: italic;"></Label>
 								</StackLayout>
 							</GridLayout>
-						</template>
+						</ng-template>
 					</ListView>
 				</GridLayout>
 			</ScrollView>

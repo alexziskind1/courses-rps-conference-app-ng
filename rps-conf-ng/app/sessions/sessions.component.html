@@ -7,23 +7,23 @@
 
 				<AbsoluteLayout>
 					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="My agenda"></Button>
+					 text="My agenda"></Button>
 					<Button (tap)="selectView(0, 'My agenda')" [class]="selectedViewIndex === 0 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="My agenda"></Button>
+					 text="My agenda"></Button>
 				</AbsoluteLayout>
 
 				<AbsoluteLayout>
 					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="All sessions"></Button>
+					 text="All sessions"></Button>
 					<Button (tap)="selectView(1, 'All sessions')" [class]="selectedViewIndex === 1 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="All sessions"></Button>
+					 text="All sessions"></Button>
 				</AbsoluteLayout>
 
 				<AbsoluteLayout>
 					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="Sponsors"></Button>
+					 text="Sponsors"></Button>
 					<Button (tap)="selectView(2, 'Sponsors')" [class]="selectedViewIndex === 2 ? 'slide-out-btn' : 'slide-out-btn-selected' "
-						text="Sponsors"></Button>
+					 text="Sponsors"></Button>
 				</AbsoluteLayout>
 
 			</StackLayout>
@@ -54,9 +54,9 @@
 							<Label [text]="actionBarTitle" class="action-bar-title"></Label>
 						</GridLayout>
 
-						<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapsed' ">
+						<StackLayout [visibility]="isSessionsPage ? 'visible' : 'collapse' ">
 							<GridLayout class="darker">
-								<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [(ngModel)]="selectedIndex"></SegmentedBar>
+								<SegmentedBar selectedBackgroundColor="#fac950" [items]="confDayOptions" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)"></SegmentedBar>
 							</GridLayout>
 
 							<Label [text]="dayHeader" class="page-title bold" horizontalAlignment="center" margin="15"></Label>
@@ -68,12 +68,12 @@
 				<!-- Sessions Views -->
 				<GridLayout rows="auto, *" row="1">
 					<session-list (notifySessionSelected)="sessionSelected($event)" [sessionCardVisible]="sessionCardVisible" [selectedViewIndex]="selectedViewIndex"
-						[selectedIndex]="selectedIndex"></session-list>
+					 [selectedIndex]="selectedIndex"></session-list>
 				</GridLayout>
 
 
 				<!-- Sponsors -->
-				<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapsed' " class="content-offset">
+				<StackLayout row="1" [visibility]="selectedViewIndex === 2 ? 'visible' : 'collapse' " class="content-offset">
 					<sponsors-list *ngIf="selectedViewIndex === 2"></sponsors-list>
 				</StackLayout>
 

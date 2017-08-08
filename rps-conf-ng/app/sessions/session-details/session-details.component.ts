@@ -79,7 +79,7 @@ export class SessionDetailsComponent implements OnInit {
     let lblHeight = lblDesc.getMeasuredHeight();
     this.descHeight = lblHeight;
 
-    lblDesc.visibility = 'collapsed';
+    lblDesc.visibility = 'collapse';
     lblDescWrapper.height = 60;
 
     if (txtDesc.ios) {
