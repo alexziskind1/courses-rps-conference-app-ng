@@ -1,10 +1,12 @@
 # RPS Conference App code 
 
 
-* **This version is the Angular2 verison of the app**
+* **This version is the Angular verison of the app**
 
 *IMPORTANT:* If you are using version 2.5.0 of the NativeScript CLI, please upgrade to 2.5.1 right away. 
 Please use the ```update_2.5.1``` branch of this repository if you're on 2.5.x.
+
+Branch ```update_3.1.3``` has a working version of the app for NativeScript 3.1.3, but the map page isn't loading the images. This needs to be looked into.
 
 To check your version run this:
 ```
